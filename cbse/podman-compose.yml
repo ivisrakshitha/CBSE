@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  cbse-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cbse-app
+    restart: unless-stopped
+    ports:
+      - "5100:80"
+    networks:
+      - cbse-network
+
+networks:
+  cbse-network:
+    driver: bridge

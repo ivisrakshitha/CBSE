@@ -1,0 +1,201 @@
+{
+    "chapterMetadata": {
+        "title": "Polynomials",
+        "subject": "Mathematics",
+        "strand": "Algebra",
+        "grade": 10,
+        "learningObjectives": [
+            "Understand different types of polynomials",
+            "Learn about zeroes of polynomials",
+            "Explore relationship between zeroes and coefficients",
+            "Develop skills in factorization and polynomial analysis"
+        ],
+        "prerequisites": [
+            "Basic algebraic manipulation",
+            "Understanding of linear and quadratic equations",
+            "Concept of variables and coefficients"
+        ],
+        "ncertMathematicalProcess": {
+            "problemSolving": "Developing logical reasoning through polynomial manipulation",
+            "progressiveApproach": "Building understanding from linear to cubic polynomials"
+        }
+    },
+    "sections": [
+        {
+            "title": "2.1 Introduction",
+            "summary": "Introduction to polynomials, their types, and degrees",
+            "keyConcepts": [
+                {
+                    "name": "Polynomial Degrees",
+                    "description": "Classification of polynomials based on the highest power of the variable",
+                    "examples": [
+                        "Linear polynomial (degree 1)",
+                        "Quadratic polynomial (degree 2)",
+                        "Cubic polynomial (degree 3)"
+                    ]
+                },
+                {
+                    "name": "Polynomial Formation",
+                    "description": "Rules for forming valid polynomials",
+                    "invalidExamples": [
+                        "1/x",
+                        "x/(x-2)",
+                        "2/(x²+2x+3)"
+                    ]
+                }
+            ],
+            "examples": [
+                {
+                    "content": "4x + 2 (linear polynomial)",
+                    "context": "Polynomial in x of degree 1"
+                },
+                {
+                    "content": "2y² - 3y + 4 (quadratic polynomial)",
+                    "context": "Polynomial in y of degree 2"
+                }
+            ]
+        },
+        {
+            "title": "2.2 Geometrical Meaning of the Zeroes of a Polynomial",
+            "summary": "Understanding zeroes through graphical representation",
+            "keyConcepts": [
+                {
+                    "name": "Zeroes",
+                    "description": "Points where polynomial equals zero",
+                    "graphicalMeaning": "x-coordinates where graph intersects x-axis"
+                }
+            ],
+            "examples": [
+                {
+                    "problem": "Analyze zeroes for different polynomial graphs",
+                    "solution": "Determine number of zeroes based on x-axis intersections"
+                }
+            ],
+            "exercises": [
+                {
+                    "type": "Graph analysis",
+                    "description": "Count zeroes from polynomial graphs",
+                    "difficulty": "Intermediate"
+                }
+            ]
+        },
+        {
+            "title": "2.3 Relationship between Zeroes and Coefficients of a Polynomial",
+            "summary": "Exploring connections between polynomial zeroes and their coefficients",
+            "keyConcepts": [
+                {
+                    "name": "Quadratic Polynomial Relationships",
+                    "description": "Relationships between zeroes and coefficients for quadratic polynomials",
+                    "relationships": [
+                        "Sum of zeroes related to coefficient of x",
+                        "Product of zeroes related to constant term"
+                    ]
+                },
+                {
+                    "name": "Cubic Polynomial Relationships",
+                    "description": "Extended relationships for cubic polynomials",
+                    "relationships": [
+                        "Sum of zeroes related to coefficient of x²",
+                        "Sum of products of zeroes related to coefficient of x"
+                    ]
+                }
+            ],
+            "examples": [
+                {
+                    "problem": "Find zeroes and verify relationships",
+                    "solution": "Demonstrate connections between zeroes and coefficients"
+                }
+            ]
+        },
+        {
+            "title": "2.4 Summary",
+            "summary": "Recap of key concepts about polynomials",
+            "keyConcepts": [
+                {
+                    "name": "Key Learning Points",
+                    "description": "Summary of polynomial properties and relationships"
+                }
+            ]
+        }
+    ],
+    "teachingResources": {
+        "keyVocabulary": [
+            {
+                "term": "Polynomial",
+                "definition": "An expression of variables and coefficients involving only addition, subtraction, multiplication, and non-negative integer exponents"
+            },
+            {
+                "term": "Zero of a Polynomial",
+                "definition": "A value of x that makes the polynomial equal to zero"
+            }
+        ],
+        "commonMisconceptions": [
+            {
+                "misconception": "All polynomials intersect the x-axis",
+                "correction": "Some polynomials may not intersect the x-axis at all"
+            }
+        ],
+        "assessmentIdeas": [
+            {
+                "questionType": "Polynomial Analysis",
+                "description": "Finding zeroes and verifying coefficient relationships"
+            }
+        ]
+    },
+    "exercises": {
+        "exercise2.1": {
+            "title": "Exercise 2.1",
+            "description": "Determine number of zeroes from polynomial graphs",
+            "problems": [
+                {
+                    "type": "Graph Analysis",
+                    "instruction": "Find the number of zeroes for given polynomial graphs"
+                }
+            ]
+        },
+        "exercise2.2": {
+            "title": "Exercise 2.2",
+            "description": "Polynomial zero and coefficient relationships",
+            "problems": [
+                {
+                    "part1": {
+                        "type": "Find Zeroes",
+                        "instruction": "Find zeroes of given quadratic polynomials",
+                        "polynomials": [
+                            "x² - 2x - 8",
+                            "4s² - 4s + 1",
+                            "6x² - 3 - 7x",
+                            "4u² + 8u",
+                            "t² - 15",
+                            "3x² - x - 4"
+                        ]
+                    },
+                    "part2": {
+                        "type": "Construct Polynomial",
+                        "instruction": "Find quadratic polynomials with given zero sum and product",
+                        "conditions": [
+                            "1/4, -1",
+                            "√2, 1/3",
+                            "0, 5",
+                            "1, -1",
+                            "-1/4, -1/4",
+                            "4, 1"
+                        ]
+                    }
+                }
+            ]
+        }
+    },
+    "practicalApplications": [
+        {
+            "context": "Graphing and analyzing polynomial functions",
+            "description": "Understanding relationships between algebraic and graphical representations"
+        }
+    ],
+    "connections": {
+        "crossTopicLinks": [
+            "Connection to coordinate geometry",
+            "Foundations for advanced algebraic concepts"
+        ]
+    }
+}

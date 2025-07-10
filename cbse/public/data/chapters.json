@@ -1,0 +1,106 @@
+{
+    "mathematics": [
+      {
+        "title": "NCERT Mathematics Textbook",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "Real Numbers", description: "Explore Euclid\"s division lemma, fundamental theorem of arithmetic, and more." },
+          { number: "2", title: "Polynomials", description: "Learn about polynomials in one variable, their degrees, and zeros." },
+          { number: "3", title: "Pair of Linear Equations in Two Variables", description: "Study graphical and algebraic methods of solution." },
+          { number: "4", title: "Quadratic Equations", description: "Explore quadratic equations and their solutions." },
+          { number: "5", title: "Arithmetic Progressions", description: "Understand arithmetic progressions and their applications." }
+        ]
+      },
+      {
+        title: "Mathematics Practice Book",
+        publisher: "IVIS LABS Educational Resources",
+        chapters: [
+          { number: "1", title: "Real Numbers Practice", description: "Practice problems and exercises for real numbers." },
+          { number: "2", title: "Polynomials Practice", description: "Problem-solving techniques for polynomials." },
+          { number: "3", title: "Linear Equations Practice", description: "Practice solving linear equations with various methods." }
+        ]
+      }
+    ],
+    "science": [
+      {
+        title: "NCERT Science Textbook",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "Chemical Reactions and Equations", description: "Understand chemical reactions, their types, and balancing equations." },
+          { number: "2", title: "Acids, Bases and Salts", description: "Learn about acids, bases, their properties, and reactions." },
+          { number: "3", title: "Metals and Non-metals", description: "Study properties and reactions of metals and non-metals." },
+          { number: "4", title: "Carbon and its Compounds", description: "Exploring carbon\"s chemical characteristics through experimental activities." },
+          { number: "5", title: "Life Processes", description: "Explore nutrition, respiration, transport, and excretion in living organisms." }
+          
+        ]
+      }
+    ],
+    "social-science": [
+      {
+        title: "NCERT History Textbook",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "The Rise of Nationalism in Europe", description: "Study the growth of nationalism in Europe during the 19th century." },
+          { number: "2", title: "Nationalism in India", description: "Understand the development of Indian nationalism." },
+          { number: "3", title: "The Making of a Global World", description: "Explore the pre-modern world and the 19th century global economy." }
+        ]
+      },
+      {
+        title: "NCERT Geography Textbook",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "Resources and Development", description: "Learn about types of resources and their development in India." },
+          { number: "2", title: "Forest and Wildlife Resources", description: "Study the importance and conservation of forest and wildlife." }
+        ]
+      }
+    ],
+    "english": [
+      {
+        title: "NCERT First Flight (Textbook)",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "A Letter to God", description: "Story by G.L. Fuentes" },
+          { number: "2", title: "Nelson Mandela: Long Walk to Freedom", description: "Autobiographical excerpt by Nelson Mandela" },
+          { number: "3", title: "Two Stories about Flying", description: "Stories about the triumph of human spirit" }
+        ]
+      },
+      {
+        title: "NCERT Footprints Without Feet (Supplementary Reader)",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "A Triumph of Surgery", description: "Story by James Herriot" },
+          { number: "2", title: "The Thief\"s Story", description: "Story by Ruskin Bond" }
+        ]
+      }
+    ],
+    "kannada": [
+      {
+        title: "NCERT Kannada Textbook",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "ಪಾಠ ೧ - ಕನ್ನಡ ನಾಡು", description: "Introduction to Kannada language and literature" },
+          { number: "2", title: "ಪಾಠ ೨ - ಕನ್ನಡ ಸಾಹಿತ್ಯ", description: "Study of Kannada literature" },
+          { number: "3", title: "ಪಾಠ ೩ - ವ್ಯಾಕರಣ", description: "Kannada grammar and syntax" }
+        ]
+      }
+    ],
+    "hindi": [
+      {
+        title: "NCERT Kshitij (Hindi Textbook)",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "सूरदास", description: "Works of Surdas and their significance" },
+          { number: "2", title: "तुलसीदास", description: "Poetry of Tulsidas and its relevance" },
+          { number: "3", title: "देव", description: "Literary contributions of Dev" }
+        ]
+      },
+      {
+        title: "NCERT Kritika (Hindi Supplementary Reader)",
+        publisher: "National Council of Educational Research and Training",
+        chapters: [
+          { number: "1", title: "माता का अंचल", description: "Story by Shivpujan Sahay" },
+          { number: "2", title: "जॉर्ज पंचम की नाक", description: "Satirical piece by Harishankar Parsai" }
+        ]
+      }
+    ]
+  }
