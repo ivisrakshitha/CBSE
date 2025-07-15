@@ -9,7 +9,7 @@ import ContentPage from "../views/ContentPage.vue";
 const routes = [
   {
     path: "/",
-    redirect: "/class/10/subject/mathematics",
+    redirect: "/class/10/subject/science",
   },
 
   {

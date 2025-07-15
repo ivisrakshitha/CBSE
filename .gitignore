@@ -1,0 +1,80 @@
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Dependency directories
+node_modules/
+.pnp/
+.pnp.js
+
+# Vite or Vue CLI build output
+dist/
+build/
+
+# Output of 'npm pack'
+*.tgz
+
+# Local environment variables
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# Editor directories and files
+.vscode/
+.idea/
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Mac system files
+.DS_Store
+
+# Linux system files
+*~
+
+# npm cache
+.npm/
+
+# yarn v2+ cache
+.yarn/*
+!.yarn/patches
+!.yarn/releases
+!.yarn/plugins
+!.yarn/sdks
+!.yarn/versions
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# TypeScript
+*.tsbuildinfo
+
+# Coverage results
+coverage/
+
+# Test output
+test-results/
+junit.xml
+
+# VSCode test logs and debug
+*.log
+.vscode-test/
+
+# Local serverless config
+.local/
+
+# Git hooks (if managed locally)
+.husky/
+
+# Prettier / lint-staged
+.prettier-cache/
