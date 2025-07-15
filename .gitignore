@@ -16,7 +16,7 @@ build/
 
 # Output of 'npm pack'
 *.tgz
-
+.env
 # Local environment variables
 .env.local
 .env.*.local
