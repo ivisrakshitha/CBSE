@@ -59,7 +59,7 @@ export default {
     methods: {
         selectClass(classNum) {
             if (classNum === 10) {
-                this.$router.push(`/class/${classNum} / subjects`);
+                this.$router.push(`/class/${classNum}/subjects`);
             }
         },
         getRomanNumeral(num) {

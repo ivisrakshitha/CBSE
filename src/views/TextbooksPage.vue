@@ -7,38 +7,36 @@
       </router-link>
       <div class="nav-pulse">PULSE</div>
       <div class="breadcrumbs">
-        <router-link to="/cbse">CBSE</router-link> / 
+        <router-link to="/cbse">CBSE</router-link> /
         <router-link :to="`/class/${classNum}/subjects`">Class {{ classNum }}</router-link> /
         <span>{{ subject }}</span>
       </div>
     </nav>
-    
+
     <header>
       <h1>{{ subject.toUpperCase() }} - Class {{ classNum }}</h1>
       <p>Explore textbooks and chapters</p>
     </header>
-    
+
     <div class="textbooks-container">
-      <div 
-        v-for="(textbook, index) in textbooks" 
-        :key="index" 
-        class="textbook-card"
-      >
+      <div v-for="(textbook, index) in textbooks" :key="index" class="textbook-card">
         <div class="textbook-header">
           <h2>{{ textbook.title }}</h2>
           <p class="publisher">{{ textbook.publisher }}</p>
         </div>
-        
+
         <div class="chapters-list">
           <h3>Chapters</h3>
-          <div class="chapter-card" v-for="(chapter, chapterIndex) in textbook.chapters" :key="chapterIndex" @click="openChapter(textbook, chapter)">
+          <div class="chapter-card" v-for="(chapter, chapterIndex) in textbook.chapters" :key="chapterIndex"
+            @click="openChapter(textbook, chapter)">
             <div class="chapter-number">{{ chapter.number }}</div>
             <div class="chapter-details">
               <h4>{{ chapter.title }}</h4>
               <p>{{ chapter.description }}</p>
             </div>
             <div class="chapter-arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="9 18 15 12 9 6"></polyline>
               </svg>
             </div>
@@ -69,6 +67,10 @@ export default {
         .split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
+    },
+    subjectParam() {
+      // Return the original subject parameter (kebab-case)
+      return this.$route.params.subject || '';
     },
     // This would typically come from an API or Vuex store
     textbooks() {
@@ -106,7 +108,6 @@ export default {
               { number: '3', title: 'Metals and Non-metals', description: 'Study properties and reactions of metals and non-metals.' },
               { number: '4', title: 'Carbon and its Compounds', description: 'Exploring carbon\'s chemical characteristics through experimental activities.' },
               { number: '5', title: 'Life Processes', description: 'Explore nutrition, respiration, transport, and excretion in living organisms.' }
-              
             ]
           }
         ],
@@ -179,26 +180,46 @@ export default {
           }
         ]
       };
-      
+
       // Convert route param subject to lowercase for case-insensitive lookup
-      const subjectKey = this.subject.toLowerCase().replace(' ', '-');
+      const subjectKey = this.subjectParam.toLowerCase();
       return textbooksBySubject[subjectKey] || [];
     }
   },
   methods: {
     openChapter(textbook, chapter) {
       console.log(`Opening chapter "${chapter.title}" from "${textbook.title}"`);
-      
-      // Navigate to the chapter content page
-      this.$router.push({
-        name: 'ChapterContent',
-        params: {
-          classNum: this.classNum,
-          subject: this.subjectParam,
-          textbookId: textbook.title.toLowerCase().replace(/\s+/g, '-'),
-          chapterId: 'chapter' + chapter.number
-        }
-      });
+
+      // Create textbook ID by converting title to kebab-case
+      const textbookId = textbook.title.toLowerCase().replace(/\s+/g, '-');
+      const chapterId = 'chapter' + chapter.number;
+
+      // Map subjects to their corresponding route names
+      const routeNames = {
+        'mathematics': 'MathematicsContent',
+        'science': 'ScienceContent',
+        'social-science': 'SocialScienceContent',
+        'english': 'EnglishContent',
+        'kannada': 'KannadaContent',
+        'hindi': 'HindiContent'
+      };
+
+      // Get the route name for current subject
+      const routeName = routeNames[this.subjectParam];
+
+      if (routeName) {
+        // Navigate to the subject-specific chapter content page
+        this.$router.push({
+          name: routeName,
+          params: {
+            classNum: this.classNum,
+            textbookId: textbookId,
+            chapterId: chapterId
+          }
+        });
+      } else {
+        console.error(`No route found for subject: ${this.subjectParam}`);
+      }
     }
   }
 }
@@ -368,20 +389,20 @@ header p {
   .breadcrumbs {
     display: none;
   }
-  
+
   .textbook-header h2 {
     font-size: 1.5rem;
   }
-  
+
   .chapter-card {
     flex-direction: column;
     align-items: flex-start;
   }
-  
+
   .chapter-number {
     margin-bottom: 10px;
   }
-  
+
   .chapter-arrow {
     position: absolute;
     right: 20px;
