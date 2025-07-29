@@ -23,32 +23,34 @@
         class="subject-card"
         :class="{ 
           'active': hoverIndex === index,
-          'animated': animatedCards.includes(index)
+          'animated': animatedCards.includes(index),
+          'large-card': subject === 'Mathematics',
+          [`card-${subject.toLowerCase().replace(' ', '-')}`]: true
         }"
         :style="{ 
           '--index': index,
-          '--delay': index * 150 + 'ms',
-          'left': `calc(50% + ${(index - centerIndex) * 140}px)`
+          '--delay': index * 150 + 'ms'
         }"
         @mouseenter="hoverIndex = index"
         @mouseleave="hoverIndex = -1"
         @click="selectSubject(subject)"
       >
-        <!-- Card Header -->
-        <div class="card-header">
+        <!-- Card Content -->
+        <div class="card-content">
           <div class="subject-header">
             <h2>{{ subject }}</h2>
             <p>Explore curriculum, resources and more</p>
           </div>
-        </div>
-        
-        <!-- Card Body -->
-        <div class="card-body">
-          <div class="subject-icon" :class="'icon-' + subject.toLowerCase().replace(' ', '-')">
+          
+          <div class="subject-icon">
             <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
               <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
             </svg>
+          </div>
+          
+          <div class="bottom-text">
+            <p>Explore curriculum, resources and more</p>
           </div>
         </div>
       </div>
@@ -77,9 +79,6 @@ export default {
   computed: {
     classNum() {
       return parseInt(this.$route.params.classNum) || 10;
-    },
-    centerIndex() {
-      return (this.subjects.length - 1) / 2;
     }
   },
   methods: {
@@ -96,7 +95,7 @@ export default {
       this.subjects.forEach((subject, index) => {
         setTimeout(() => {
           this.animatedCards.push(index);
-        }, index * 150); // Stagger animation by 150ms
+        }, index * 150);
       });
     }
   }
@@ -149,7 +148,7 @@ export default {
 
 header {
   text-align: center;
-  margin-bottom: 60px;
+  margin-bottom: 80px;
 }
 
 header h1 {
@@ -170,80 +169,161 @@ header p {
 }
 
 .subjects-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  perspective: 1200px;
-  min-height: 500px;
-  width: 100%;
   position: relative;
-  margin-top: 30px;
+  width: 100%;
+  height: 500px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  perspective: 1200px;
 }
 
 .subject-card {
   position: absolute;
-  width: 300px;
-  height: 400px;
   cursor: pointer;
-  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-  transform-style: preserve-3d;
-  transform-origin: center center;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(50, 50, 50, 0.2);
-  box-shadow:
-    0 15px 35px rgba(0, 0, 0, 0.3),
-    0 5px 15px rgba(23, 181, 181, 0.1),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
+  transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border-radius: 24px;
+  background: rgba(23, 181, 181, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 2px solid rgba(23, 181, 181, 0.3);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(23, 181, 181, 0.1),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1);
   overflow: hidden;
-  /* Initial position - off-screen to the right */
-  transform: rotateY(-15deg) translateZ(0px) translateX(calc(100vw + 50px));
+  /* Initial animation state */
+  transform: scale(0.8) translateY(50px);
   opacity: 0;
-  top: 50%;
-  margin-top: -200px;
 }
 
 .subject-card.animated {
-  /* Final position - centered and visible */
-  transform: rotateY(-15deg) translateZ(0px) translateX(-50%);
   opacity: 1;
   transition-delay: var(--delay);
 }
 
 .subject-card.active {
-  transform: rotateY(0deg) translateZ(50px) scale(1.05) translateX(-50%);
-  opacity: 1;
-  z-index: 10;
-  border-color: rgba(77, 210, 210, 0.4);
+  transform: scale(1.1) translateY(-30px) !important;
+  border-color: rgba(23, 181, 181, 0.8);
+  background: rgba(23, 181, 181, 0.15);
   box-shadow: 
-    0 25px 50px rgba(0, 0, 0, 0.4),
-    0 10px 25px rgba(23, 181, 181, 0.2),
-    0 0 30px rgba(77, 210, 210, 0.4),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    0 40px 80px rgba(0, 0, 0, 0.4),
+    0 20px 40px rgba(23, 181, 181, 0.3),
+    0 0 60px rgba(23, 181, 181, 0.4),
+    inset 0 2px 4px rgba(255, 255, 255, 0.2);
+  z-index: 10 !important;
 }
 
-/* Glassy Card Header */ 
-.card-header {
-    background: #4bb3c8; /* Pure white color instead of linear gradient or blur backdrop filter*/
-    padding: 25px 30px 20px 30px;  
-     position: relative;     
-         border-radius: 17px;       
-             height: auto;         
-                 display: flex;           
-                     justify-content: center;      
-                         align-items: stretch;              
-                             box-shadow: none;                /* Remove any added shadow */                           
-                                 }                      #remove{ border :none;} 
+/* Card Size Classes */
+/* Large cards - Mathematics and Science */
+.card-mathematics,
+.card-science {
+  width: 290px;
+  height: 390px;
+  z-index: 6;
+}
 
+/* Medium cards - Kannada and Social Science */
+.card-kannada,
+.card-social-science {
+  width: 250px;
+  height: 340px;
+  z-index: 4;
+}
 
-.subject-header {
+/* Small cards - English and Hindi */
+.card-english,
+.card-hindi {
+  width: 220px;
+  height: 300px;
   z-index: 2;
 }
 
+/* Single Line Pack of Cards Arrangement */
+/* New Order: English->Kannada->Mathematics->Science->Social Science->Hindi */
+
+/* Card 1 - English (leftmost, small) */
+.card-english {
+  left: calc(28% - 300px);
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(35deg) scale(0.8) translateY(50px);
+}
+
+.card-english.animated {
+  transform: translate(-50%, -50%) rotateY(70deg) scale(1) translateY(0);
+}
+
+/* Card 2 - Kannada (medium) */
+.card-kannada {
+  left: calc(35% - 180px);
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(12deg) scale(0.8) translateY(50px);
+}
+
+.card-kannada.animated {
+  transform: translate(-50%, -50%) rotateY(60deg) scale(1) translateY(0);
+}
+
+/* Card 3 - Mathematics (center, large) */
+.card-mathematics {
+  left: calc(44.5% - 60px);
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(8deg) scale(0.8) translateY(50px);
+}
+
+.card-mathematics.animated {
+  transform: translate(-50%, -50%) rotateY(30deg) scale(1) translateY(0);
+}
+
+/* Card 4 - Science (large) */
+.card-science {
+  left: calc(55.5% + 60px);
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(4deg) scale(0.8) translateY(50px);
+}
+
+.card-science.animated {
+  transform: translate(-50%, -50%) rotateY(-30deg) scale(1) translateY(0);
+}
+
+/* Card 5 - Social Science (medium) */
+.card-social-science {
+  left: calc(65% + 180px);
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(0deg) scale(0.8) translateY(50px);
+}
+
+.card-social-science.animated {
+  transform: translate(-50%, -50%) rotateY(-60deg) scale(1) translateY(0);
+}
+
+/* Card 6 - Hindi (rightmost, small) */
+.card-hindi {
+  left: calc(72% + 300px);
+  top: 50%;
+  transform: translate(-50%, -50%) rotateY(-4deg) scale(0.8) translateY(50px);
+}
+
+.card-hindi.animated {
+  transform: translate(-50%, -50%) rotateY(-70deg) scale(1) translateY(0);
+}
+
+.card-content {
+  padding: 30px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  text-align: center;
+}
+
+.subject-header {
+  flex-shrink: 0;
+}
+
 .subject-header h2 {
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 700;
   margin-bottom: 8px;
   color: #ffffff;
@@ -253,44 +333,85 @@ header p {
   text-overflow: ellipsis;
 }
 
+/* Typography adjustments for different card sizes */
+/* Large cards - Mathematics and Science */
+.card-mathematics .subject-header h2,
+.card-science .subject-header h2 {
+  font-size: 2.2rem;
+}
+
+.card-mathematics .subject-header p,
+.card-science .subject-header p {
+  font-size: 1rem;
+}
+
+.card-mathematics .subject-icon,
+.card-science .subject-icon {
+  width: 110px;
+  height: 110px;
+}
+
+.card-mathematics .subject-icon svg,
+.card-science .subject-icon svg {
+  width: 52px;
+  height: 52px;
+}
+
+/* Medium cards - Kannada and Social Science */
+.card-kannada .subject-header h2,
+.card-social-science .subject-header h2 {
+  font-size: 1.9rem;
+}
+
+.card-kannada .subject-header p,
+.card-social-science .subject-header p {
+  font-size: 0.95rem;
+}
+
+.card-kannada .subject-icon,
+.card-social-science .subject-icon {
+  width: 100px;
+  height: 100px;
+}
+
+.card-kannada .subject-icon svg,
+.card-social-science .subject-icon svg {
+  width: 48px;
+  height: 48px;
+}
+
+/* Small cards - English and Hindi */
+.card-english .subject-header h2,
+.card-hindi .subject-header h2 {
+  font-size: 1.7rem;
+}
+
+.card-english .subject-header p,
+.card-hindi .subject-header p {
+  font-size: 0.85rem;
+}
+
+.card-english .subject-icon,
+.card-hindi .subject-icon {
+  width: 90px;
+  height: 90px;
+}
+
+.card-english .subject-icon svg,
+.card-hindi .subject-icon svg {
+  width: 44px;
+  height: 44px;
+}
+
 .subject-header p {
-  font-size: 0.9rem;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.8);
   line-height: 1.4;
   font-weight: 400;
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
-/* Glassy Card Body */
-.card-body {
-  background: linear-gradient(135deg, rgba(165, 163, 163, 0.3) 0%, rgba(45, 45, 45, 0.4) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  padding: 30px;
-  height: calc(100% - 120px);
-  position: relative;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0 0 17px 17px;
-  border: 1px solid rgba(77, 210, 210, 0.3);
-  border-top: none;
-  box-shadow: 
-    0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.05);
-}
-
-.subject-card.active .card-body {
-  box-shadow: 
-    0 15px 30px rgba(0, 0, 0, 0.3),
-    0 5px 15px rgba(23, 181, 181, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
-}
-
 .subject-icon {
-  width: 120px;
-  height: 120px;
-  background: linear-gradient(135deg, rgba(23, 181, 181, 0.15) 0%, rgba(23, 181, 181, 0.08) 100%);
+  background: rgba(23, 181, 181, 0.15);
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
   border-radius: 50%;
@@ -298,217 +419,328 @@ header p {
   align-items: center;
   justify-content: center;
   color: #17b5b5;
-  border: 2px solid rgba(77, 210, 210, 0.3);
+  border: 2px solid rgba(23, 181, 181, 0.4);
   transition: all 0.3s ease;
   box-shadow: 
     0 8px 20px rgba(0, 0, 0, 0.2),
-    inset 0 1px 1px rgba(255, 255, 255, 0.1);
+    0 0 20px rgba(23, 181, 181, 0.2),
+    inset 0 1px 2px rgba(255, 255, 255, 0.1);
+  flex-shrink: 0;
 }
 
 .subject-card.active .subject-icon {
   transform: scale(1.1);
-  background: linear-gradient(135deg, rgba(23, 181, 181, 0.25) 0%, rgba(23, 181, 181, 0.15) 100%);
-  border-color: rgba(77, 210, 210, 0.5);
+  background: rgba(23, 181, 181, 0.25);
+  border-color: rgba(23, 181, 181, 0.6);
   box-shadow: 
-    0 10px 25px rgba(0, 0, 0, 0.3),
-    0 0 20px rgba(23, 181, 181, 0.3),
-    inset 0 1px 1px rgba(255, 255, 255, 0.2);
+    0 12px 30px rgba(0, 0, 0, 0.3),
+    0 0 30px rgba(23, 181, 181, 0.4),
+    inset 0 1px 2px rgba(255, 255, 255, 0.2);
 }
 
 .subject-icon svg {
-  width: 48px;
-  height: 48px;
   filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
-/* Subject-specific styling for icons */
-.icon-mathematics svg,
-.icon-science svg,
-.icon-social-science svg,
-.icon-english svg,
-.icon-kannada svg,
-.icon-hindi svg {
-  stroke: #17b5b5;
+.bottom-text {
+  flex-shrink: 0;
+}
+
+.bottom-text p {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.7);
+  line-height: 1.4;
+  font-weight: 400;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+/* Adjust bottom text for different card sizes */
+.card-mathematics .bottom-text p,
+.card-science .bottom-text p {
+  font-size: 0.9rem;
+}
+
+.card-kannada .bottom-text p,
+.card-social-science .bottom-text p {
+  font-size: 0.85rem;
+}
+
+.card-english .bottom-text p,
+.card-hindi .bottom-text p {
+  font-size: 0.8rem;
+}
+
+/* Enhanced hover effects */
+.subject-card:hover:not(.active) {
+  transform: translateY(-15px) scale(1.02) !important;
+  border-color: rgba(23, 181, 181, 0.5);
+  z-index: 8;
+}
+
+/* Specific hover transforms for each card to maintain their rotation */
+.card-english:hover:not(.active) {
+  transform: translate(-50%, -50%) rotateY(15deg) scale(1.02) translateY(-15px) !important;
+}
+
+.card-kannada:hover:not(.active) {
+  transform: translate(-50%, -50%) rotateY(12deg) scale(1.02) translateY(-15px) !important;
+}
+
+.card-mathematics:hover:not(.active) {
+  transform: translate(-50%, -50%) rotateY(8deg) scale(1.02) translateY(-15px) !important;
+}
+
+.card-science:hover:not(.active) {
+  transform: translate(-50%, -50%) rotateY(4deg) scale(1.02) translateY(-15px) !important;
+}
+
+.card-social-science:hover:not(.active) {
+  transform: translate(-50%, -50%) rotateY(0deg) scale(1.02) translateY(-15px) !important;
+}
+
+.card-hindi:hover:not(.active) {
+  transform: translate(-50%, -50%) rotateY(-4deg) scale(1.02) translateY(-15px) !important;
 }
 
 /* Responsive Design */
 @media (max-width: 1400px) {
-  .subject-card {
+  .subjects-container {
+    height: 480px;
+  }
+  
+  /* Large cards */
+  .card-mathematics,
+  .card-science {
     width: 280px;
     height: 370px;
-    margin-top: -185px;
   }
   
-  .subject-card.animated {
-    transform: rotateY(-15deg) translateZ(0px) translateX(-50%);
+  /* Medium cards */
+  .card-kannada,
+  .card-social-science {
+    width: 250px;
+    height: 330px;
   }
   
-  .subject-header h2 {
-    font-size: 2rem;
+  /* Small cards */
+  .card-english,
+  .card-hindi {
+    width: 220px;
+    height: 290px;
   }
   
-  .card-header {
-    height: 110px;
+  /* Adjust spacing for smaller screens */
+  .card-english {
+    left: calc(50% - 260px);
   }
   
-  .card-body {
-    height: calc(100% - 110px);
+  .card-kannada {
+    left: calc(50% - 156px);
+  }
+  
+  .card-mathematics {
+    left: calc(50% - 52px);
+  }
+  
+  .card-science {
+    left: calc(50% + 52px);
+  }
+  
+  .card-social-science {
+    left: calc(50% + 156px);
+  }
+  
+  .card-hindi {
+    left: calc(50% + 260px);
   }
 }
 
 @media (max-width: 1200px) {
   .subjects-container {
-    overflow-x: auto;
-    justify-content: flex-start;
-    padding: 0 50px;
+    height: 450px;
   }
   
-  .subject-card {
-    width: 250px;
+  /* Large cards */
+  .card-mathematics,
+  .card-science {
+    width: 260px;
     height: 340px;
-    margin-top: -170px;
   }
   
-  .subject-card.animated {
-    transform: rotateY(-15deg) translateZ(0px) translateX(-50%);
+  /* Medium cards */
+  .card-kannada,
+  .card-social-science {
+    width: 230px;
+    height: 300px;
   }
   
-  .subject-header h2 {
-    font-size: 1.8rem;
+  /* Small cards */
+  .card-english,
+  .card-hindi {
+    width: 200px;
+    height: 260px;
   }
   
-  .subject-header p {
-    font-size: 0.85rem;
+  /* Typography adjustments */
+  .card-mathematics .subject-header h2,
+  .card-science .subject-header h2 {
+    font-size: 2rem;
   }
   
-  .card-header {
-    height: 100px;
+  .card-kannada .subject-header h2,
+  .card-social-science .subject-header h2 {
+    font-size: 1.7rem;
   }
   
-  .card-body {
-    height: calc(100% - 100px);
+  .card-english .subject-header h2,
+  .card-hindi .subject-header h2 {
+    font-size: 1.5rem;
   }
   
-  .subject-icon {
-    width: 100px;
-    height: 100px;
+  /* Further adjust spacing */
+  .card-english {
+    left: calc(50% - 220px);
+  }
+  
+  .card-kannada {
+    left: calc(50% - 132px);
+  }
+  
+  .card-mathematics {
+    left: calc(50% - 44px);
+  }
+  
+  .card-science {
+    left: calc(50% + 44px);
+  }
+  
+  .card-social-science {
+    left: calc(50% + 132px);
+  }
+  
+  .card-hindi {
+    left: calc(50% + 220px);
   }
 }
 
 @media (max-width: 1024px) {
+  .subjects-container {
+    height: 800px;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(3, 1fr);
+    gap: 30px;
+    align-items: center;
+    justify-items: center;
+    perspective: none;
+  }
+  
   .subject-card {
-    width: 220px;
-    height: 310px;
-    margin-top: -155px;
+    position: relative !important;
+    left: auto !important;
+    right: auto !important;
+    top: auto !important;
+    bottom: auto !important;
+    transform: scale(0.8) translateY(50px) !important;
   }
   
-  .subject-header h2 {
-    font-size: 1.6rem;
+  .subject-card.animated {
+    transform: scale(1) translateY(0) !important;
   }
   
-  .card-header {
-    height: 90px;
+  .subject-card.active {
+    transform: scale(1.05) translateY(-10px) !important;
   }
   
-  .card-body {
-    height: calc(100% - 90px);
+  .subject-card:hover:not(.active) {
+    transform: scale(1.02) translateY(-5px) !important;
   }
   
-  header h1 {
-    font-size: 2.5rem;
-  }
-}
-
-@media (max-width: 900px) {
-  .subject-card {
-    width: 200px;
-    height: 280px;
-    margin-top: -140px;
+  /* Uniform sizes for tablet */
+  .card-mathematics,
+  .card-science {
+    width: 280px;
+    height: 340px;
+    grid-column: 1 / -1;
+    justify-self: center;
   }
   
-  .subject-header h2 {
-    font-size: 1.5rem;
+  .card-kannada,
+  .card-social-science,
+  .card-english,
+  .card-hindi {
+    width: 260px;
+    height: 320px;
   }
   
-  .card-header {
-    height: 85px;
+  /* Grid order for tablet layout - maintaining the new order */
+  .card-english {
+    order: 1;
   }
   
-  .card-body {
-    height: calc(100% - 85px);
+  .card-kannada {
+    order: 2;
   }
   
-  .subject-icon {
-    width: 80px;
-    height: 80px;
+  .card-mathematics {
+    order: 3;
+    grid-column: 1 / -1;
   }
   
-  .subject-icon svg {
-    width: 36px;
-    height: 36px;
+  .card-science {
+    order: 4;
+    grid-column: 1 / -1;
+  }
+  
+  .card-social-science {
+    order: 5;
+  }
+  
+  .card-hindi {
+    order: 6;
   }
 }
 
 @media (max-width: 768px) {
+  .subjects-container {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(6, auto);
+    height: auto;
+    gap: 25px;
+    padding: 20px 10px;
+  }
+  
   .subject-card {
-    width: 180px;
-    height: 260px;
-    margin-top: -130px;
+    width: 100%;
+    max-width: 320px;
+    height: 280px;
+    grid-column: 1 !important;
+  }
+  
+  .card-mathematics,
+  .card-science {
+    height: 300px;
   }
   
   .subject-header h2 {
-    font-size: 1.4rem;
-  }
-  
-  .subject-header p {
-    font-size: 0.8rem;
+    font-size: 1.7rem;
   }
   
   header h1 {
     font-size: 2.5rem;
-  }
-  
-  .card-header {
-    height: 80px;
-    padding: 20px 25px 15px 25px;
-  }
-  
-  .card-body {
-    height: calc(100% - 80px);
-    padding: 25px;
   }
   
   .breadcrumbs {
     display: none;
   }
-}
-
-@media (max-width: 600px) {
-  .subject-card {
-    width: 160px;
-    height: 240px;
-    margin-top: -120px;
-  }
   
-  .subject-header h2 {
-    font-size: 1.3rem;
-  }
-  
-  .card-header {
-    height: 75px;
-  }
-  
-  .card-body {
-    height: calc(100% - 75px);
-  }
-  
-  header h1 {
-    font-size: 2.2rem;
-  }
-  
-  header p {
-    font-size: 1.1rem;
-  }
+  /* Mobile order - maintaining the new sequence */
+  .card-english { order: 1; }
+  .card-kannada { order: 2; }
+  .card-mathematics { order: 3; }
+  .card-science { order: 4; }
+  .card-social-science { order: 5; }
+  .card-hindi { order: 6; }
 }
 
 @media (max-width: 480px) {
@@ -516,18 +748,35 @@ header p {
     padding: 20px 15px;
   }
   
+  .subjects-container {
+    gap: 20px;
+  }
+  
   .subject-card {
-    width: 140px;
-    height: 220px;
-    margin-top: -110px;
+    height: 260px;
+  }
+  
+  .card-mathematics,
+  .card-science {
+    height: 280px;
   }
   
   .subject-header h2 {
-    font-size: 1.2rem;
+    font-size: 1.5rem;
   }
   
   .subject-header p {
-    font-size: 0.7rem;
+    font-size: 0.85rem;
+  }
+  
+  .subject-icon {
+    width: 90px;
+    height: 90px;
+  }
+  
+  .subject-icon svg {
+    width: 40px;
+    height: 40px;
   }
   
   header h1 {
@@ -538,24 +787,64 @@ header p {
     font-size: 1.1rem;
   }
   
-  .card-header {
-    height: 70px;
-    padding: 15px 20px 10px 20px;
+  .card-content {
+    padding: 25px;
   }
-  
-  .card-body {
-    height: calc(100% - 70px);
-    padding: 20px;
+}
+
+/* Enhanced visual effects for the card line */
+.subjects-container::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1200px;
+  height: 400px;
+  background: radial-gradient(ellipse, rgba(23, 181, 181, 0.02) 0%, transparent 70%);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@media (max-width: 1024px) {
+  .subjects-container::before {
+    display: none;
   }
-  
-  .subject-icon {
-    width: 70px;
-    height: 70px;
+}
+
+/* Subtle line effect behind cards */
+.subjects-container::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 900px;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent 0%, 
+    rgba(23, 181, 181, 0.1) 10%, 
+    rgba(23, 181, 181, 0.2) 50%, 
+    rgba(23, 181, 181, 0.1) 90%, 
+    transparent 100%);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  z-index: 0;
+  animation: shimmer 3s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { 
+    opacity: 0.3;
   }
-  
-  .subject-icon svg {
-    width: 32px;
-    height: 32px;
+  50% { 
+    opacity: 0.6;
+  }
+}
+
+@media (max-width: 1024px) {
+  .subjects-container::after {
+    display: none;
   }
 }
 </style>

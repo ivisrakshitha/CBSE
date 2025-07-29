@@ -1,4 +1,3 @@
-<!-- src/views/TextbooksPage.vue -->
 <template>
   <div class="textbooks-page">
     <nav class="navbar">
@@ -27,18 +26,20 @@
 
         <div class="chapters-list">
           <h3>Chapters</h3>
-          <div class="chapter-card" v-for="(chapter, chapterIndex) in textbook.chapters" :key="chapterIndex"
-            @click="openChapter(textbook, chapter)">
-            <div class="chapter-number">{{ chapter.number }}</div>
-            <div class="chapter-details">
-              <h4>{{ chapter.title }}</h4>
-              <p>{{ chapter.description }}</p>
-            </div>
-            <div class="chapter-arrow">
-              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-                stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="9 18 15 12 9 6"></polyline>
-              </svg>
+          <div class="chapter-grid">
+            <div class="chapter-card" v-for="(chapter, chapterIndex) in textbook.chapters" :key="chapterIndex"
+              @click="openChapter(textbook, chapter)">
+              <div class="chapter-number">{{ chapter.number }}</div>
+              <div class="chapter-details">
+                <h4>{{ chapter.title }}</h4>
+                <p>{{ chapter.description }}</p>
+              </div>
+              <div class="chapter-arrow">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                  stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <polyline points="9 18 15 12 9 6"></polyline>
+                </svg>
+              </div>
             </div>
           </div>
         </div>
@@ -60,19 +61,15 @@ export default {
       return parseInt(this.$route.params.classNum) || 10;
     },
     subject() {
-      // Get the subject from route params and format it properly
       const rawSubject = this.$route.params.subject || '';
-      // Convert kebab-case to proper case (e.g., 'social-science' to 'Social Science')
       return rawSubject
         .split('-')
         .map(word => word.charAt(0).toUpperCase() + word.slice(1))
         .join(' ');
     },
     subjectParam() {
-      // Return the original subject parameter (kebab-case)
       return this.$route.params.subject || '';
     },
-    // This would typically come from an API or Vuex store
     textbooks() {
       // Mock data for each subject
       const textbooksBySubject = {
@@ -180,21 +177,14 @@ export default {
           }
         ]
       };
-
-      // Convert route param subject to lowercase for case-insensitive lookup
       const subjectKey = this.subjectParam.toLowerCase();
       return textbooksBySubject[subjectKey] || [];
     }
   },
   methods: {
     openChapter(textbook, chapter) {
-      console.log(`Opening chapter "${chapter.title}" from "${textbook.title}"`);
-
-      // Create textbook ID by converting title to kebab-case
       const textbookId = textbook.title.toLowerCase().replace(/\s+/g, '-');
       const chapterId = 'chapter' + chapter.number;
-
-      // Map subjects to their corresponding route names
       const routeNames = {
         'mathematics': 'MathematicsContent',
         'science': 'ScienceContent',
@@ -203,18 +193,14 @@ export default {
         'kannada': 'KannadaContent',
         'hindi': 'HindiContent'
       };
-
-      // Get the route name for current subject
       const routeName = routeNames[this.subjectParam];
-
       if (routeName) {
-        // Navigate to the subject-specific chapter content page
         this.$router.push({
           name: routeName,
           params: {
             classNum: this.classNum,
-            textbookId: textbookId,
-            chapterId: chapterId
+            textbookId,
+            chapterId
           }
         });
       } else {
@@ -328,20 +314,27 @@ header p {
   padding-bottom: 10px;
 }
 
+.chapter-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
 .chapter-card {
-  display: flex;
-  padding: 15px;
-  border-radius: 8px;
-  margin-bottom: 15px;
   background-color: #252525;
-  cursor: pointer;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
   transition: all 0.2s ease;
-  align-items: center;
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  position: relative;
 }
 
 .chapter-card:hover {
-  background-color: #333;
-  transform: translateX(5px);
+  background-color: #2d2d2d;
+  transform: translateY(-2px);
 }
 
 .chapter-number {
@@ -354,12 +347,8 @@ header p {
   justify-content: center;
   color: #17b5b5;
   font-weight: bold;
-  margin-right: 15px;
-  flex-shrink: 0;
-}
-
-.chapter-details {
-  flex-grow: 1;
+  font-size: 1rem;
+  margin-bottom: 10px;
 }
 
 .chapter-details h4 {
@@ -374,11 +363,11 @@ header p {
 }
 
 .chapter-arrow {
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
   color: #17b5b5;
   transition: transform 0.2s ease;
-  flex-shrink: 0;
-  display: flex;
-  align-items: center;
 }
 
 .chapter-card:hover .chapter-arrow {
@@ -394,20 +383,8 @@ header p {
     font-size: 1.5rem;
   }
 
-  .chapter-card {
-    flex-direction: column;
-    align-items: flex-start;
-  }
-
-  .chapter-number {
-    margin-bottom: 10px;
-  }
-
-  .chapter-arrow {
-    position: absolute;
-    right: 20px;
-    top: 50%;
-    transform: translateY(-50%);
+  .chapter-grid {
+    grid-template-columns: 1fr;
   }
 }
 </style>

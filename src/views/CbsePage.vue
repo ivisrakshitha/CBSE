@@ -209,7 +209,7 @@ header p {
 .card-header {
     background: linear-gradient(135deg,
             rgba(36, 203, 203, 0.95) 0%,
-            rgba(36, 203, 203, 0.85) 100%);
+            rgba(23, 181, 181, 0.3) 100%);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     padding: 25px 30px 20px 30px;
@@ -315,8 +315,8 @@ header p {
 
 .class-card.disabled .card-header {
     background: linear-gradient(135deg,
-            rgba(42, 212, 212, 0.7) 0%,
-            rgba(42, 212, 212, 0.6) 100%);
+            #15b7b9,
+            #15b7b9);
     backdrop-filter: blur(15px);
 }
 

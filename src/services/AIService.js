@@ -7,8 +7,8 @@ class AIService {
     this.apiUrl =
       process.env.VUE_APP_OPENWEBUI_URL ||
       "https://chat.ivislabs.in/api/chat/completions";
-    this.apiKey = process.env.VUE_APP_OPENWEBUI_API_KEY;
-    this.model = process.env.VUE_APP_OPENWEBUI_MODEL || "llama3.2:latest";
+    this.apiKey = process.env.VUE_APP_OPENWEBUI_API_KEY || "sk-bf725748416143d88b7ea444d68f0c90";
+    this.model = process.env.VUE_APP_OPENWEBUI_MODEL || "llama3.2-vision:latest";
   }
 
   async generateExercises(sectionData, chapterMetadata) {
