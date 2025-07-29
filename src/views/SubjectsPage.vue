@@ -242,7 +242,7 @@ header p {
 /* Single Line Pack of Cards Arrangement */
 /* New Order: English->Kannada->Mathematics->Science->Social Science->Hindi */
 
-/* Card 1 - English (leftmost, small) */
+/* Card 1 - English (leftmost) */
 .card-english {
   left: calc(28% - 300px);
   top: 50%;

@@ -1,3 +1,5 @@
+
+
 <template>
     <div class="cbse-page">
         <nav class="navbar">
@@ -159,7 +161,7 @@ header p {
     transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 
-/* Glass overlay for enhanced glass effect */
+
 .glass-overlay {
     position: absolute;
     top: 0;

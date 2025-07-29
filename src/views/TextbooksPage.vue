@@ -71,7 +71,7 @@ export default {
       return this.$route.params.subject || '';
     },
     textbooks() {
-      // Mock data for each subject
+      
       const textbooksBySubject = {
         'mathematics': [
           {
