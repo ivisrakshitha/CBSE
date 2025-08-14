@@ -301,22 +301,9 @@
     }
   ],
 "personalities": [
-{
-  "id": "gauss",
-  "name": "Carl Friedrich Gauss",
-  "image": "/images/euclid.jpg",
-  "description": "Amazon Web Services (AWS) is a comprehensive and widely adopted cloud computing platform provided by Amazon. It offers a broad range of on-demand services such as computing power, storage, databases, networking, analytics, machine learning, artificial intelligence, Internet of Things (IoT), mobile services, and security. Launched in 2006, AWS enables individuals, businesses, and governments to scale and grow without the need to invest heavily in physical IT infrastructure. AWS operates on a global scale with data centers located in multiple regions and availability zones, ensuring high availability, redundancy, and low-latency performance for applications. The platform is based on a pay-as-you-go pricing model, which means customers only pay for the resources they use, making it cost-effective and flexible. Some of the most popular AWS services include Amazon EC2 (Elastic Compute Cloud) for scalable computing power, Amazon S3 (Simple Storage Service) for object storage, Amazon RDS (Relational Database Service) for managed databases, AWS Lambda for serverless computing, and Amazon CloudFront for content delivery. AWS is used by startups, enterprises, and public sector organizations across the globe for diverse workloads, including hosting websites, running enterprise applications, data analytics, machine learning model deployment, and disaster recovery solutions. The platform also offers strong security and compliance features, meeting global regulatory requirements. With its constant innovation, wide service portfolio, and strong reliability, AWS has established itself as a leader in the cloud computing industry."
-},
-
   {
     "id": "euclid",
     "name": "Euclid",
-    "image": "/images/euclid.jpg",
-    "description": "Euclid was an ancient Greek mathematician, known as the father of geometry, famous for his work 'Elements' which compiled much of the mathematical knowledge of his time."
-  },
-  {
-    "id": "euclid",
-    "name": "Ranjan",
     "image": "/images/euclid.jpg",
     "description": "Euclid was an ancient Greek mathematician, known as the father of geometry, famous for his work 'Elements' which compiled much of the mathematical knowledge of his time."
   }
