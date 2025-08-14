@@ -52,6 +52,10 @@
                     class="nav-item">
                     Exercises
                 </button>
+                <button @click="activeSection = 'personalities'" :class="{ active: activeSection === 'personalities' }" 
+          class="nav-item">
+          Talk to Person
+        </button>
             </div>
         </nav>
         <!-- Loading State -->
@@ -70,44 +74,53 @@
                 <button @click="goBack" class="back-button">Go Back</button>
             </div>
         </div>
-        <!-- Main Content with Sidebar -->
-        <div class="main-content" v-else>
-            <!-- Sidebar -->
-            <aside class="sidebar">
-                <div class="sidebar-header">
-                    <h3>Chapter Contents</h3>
-                </div>
-                <!-- Chapter Overview in Sidebar -->
-                <div class="sidebar-section" v-if="chapterData.chapterMetadata">
-                    <h4>Introduction</h4>
-                    <div class="intro-content">
-                        <TypewriterText
-                            :text="'This chapter covers ' + chapterData.chapterMetadata.title + ' in Mathematics for Class ' + chapterData.chapterMetadata.grade + '.'">
-                        </TypewriterText>
-                    </div>
-                    <div v-if="chapterData.chapterMetadata.learningObjectives && chapterData.chapterMetadata.learningObjectives.length > 0"
-                        class="learning-objectives">
-                        <h5>Learning Objectives</h5>
-                        <ul>
-                            <li v-for="(objective, index) in chapterData.chapterMetadata.learningObjectives"
-                                :key="index">
-                                {{ objective }}
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                <!-- Main Topics Navigation -->
-                <div class="sidebar-section">
-                    <h4>Main Topics</h4>
-                    <nav class="topics-nav">
-                        <button v-for="(section, index) in chapterData.sections" :key="'topic-' + index"
-                            @click="scrollToSection(index)" :class="{ active: activeTopicIndex === index }"
-                            class="topic-item">
-                            {{ section.title }}
-                        </button>
-                    </nav>
-                </div>
-            </aside>
+<!-- Main Content with Sidebar -->
+<div class="main-content" v-else>
+    <!-- Sidebar -->
+    <aside class="sidebar">
+
+        <!-- Main Topics Navigation (moved to top) -->
+        <div class="sidebar-section">
+            <h4>Main Topics</h4>
+            <nav class="topics-nav">
+                <button 
+                    v-for="(section, index) in chapterData.sections" 
+                    :key="'topic-' + index"
+                    @click="scrollToSection(index)" 
+                    :class="{ active: activeTopicIndex === index }"
+                    class="topic-item">
+                    {{ section.title }}
+                </button>
+            </nav>
+        </div>
+
+        <!-- Chapter Contents -->
+        <div class="sidebar-header">
+            <h3>Chapter Contents</h3>
+        </div>
+
+        <!-- Chapter Overview in Sidebar -->
+        <div class="sidebar-section" v-if="chapterData.chapterMetadata">
+            <h4>Introduction</h4>
+            <div class="intro-content">
+                <TypewriterText
+                    :text="'This chapter covers ' + chapterData.chapterMetadata.title + ' in Mathematics for Class ' + chapterData.chapterMetadata.grade + '.'">
+                </TypewriterText>
+            </div>
+            <div v-if="chapterData.chapterMetadata.learningObjectives && chapterData.chapterMetadata.learningObjectives.length > 0"
+                class="learning-objectives">
+                <h5>Learning Objectives</h5>
+                <ul>
+                    <li v-for="(objective, index) in chapterData.chapterMetadata.learningObjectives"
+                        :key="index">
+                        {{ objective }}
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
+    </aside>
+
             <!-- Content Area -->
             <main class="content-area">
                 <!-- Chapter Overview Section -->
@@ -297,6 +310,30 @@
                         <AIExercises :sectionData="section" :chapterMetadata="chapterData.chapterMetadata" />
                     </div>
                 </div>
+<!-- Talk to Person Section -->
+<div v-show="activeSection === 'personalities'" class="content-section">
+  <h2>Talk to Person</h2>
+
+  <!-- Personality list (names only) -->
+  <div v-if="!selectedPersonality">
+    <ul>
+      <li v-for="personality in chapterData.personalities" 
+          :key="personality.id"
+          @click="selectPersonality(personality)"
+          class="personality-name">
+        {{ personality.name }}
+      </li>
+    </ul>
+  </div>
+
+  <!-- Chat view -->
+  <div v-else>
+    <PersonalityChat 
+      :personality="selectedPersonality" 
+      @back-to-list="selectedPersonality = null" />
+  </div>
+</div>
+
             </main>
         </div>
     </div>
@@ -307,7 +344,7 @@ import IvisLabsLogo from '../../components/IvisLabsLogo.vue'
 import TypewriterText from '../../components/TypewriterText.vue'
 import GoogleSearchResults from '../../components/GoogleSearchResults.vue'
 import AIExercises from '../../components/AIExercises.vue'
-
+import PersonalityChat from '../../components/PersonalityChat.vue'
 
 export default {
     name: 'ContentPage',
@@ -315,7 +352,8 @@ export default {
         IvisLabsLogo,
         TypewriterText,
         GoogleSearchResults,
-        AIExercises
+        AIExercises,
+        PersonalityChat
     },
     data() {
         return {
@@ -323,6 +361,9 @@ export default {
             chapterData: {},
             chapterTitle: '',
             error: null,
+            selectedPersonality: null,
+            userMessage: '',
+            chatHistory: [],
             activeSection: 'overview',
             activeTopicIndex: 0,
             googleApiKey: process.env.VUE_APP_GOOGLE_API_KEY || '',
@@ -343,41 +384,97 @@ export default {
     mounted() {
         this.fetchChapterData();
     },
-    methods: {
-        async fetchChapterData() {
-            this.isLoading = true;
-            this.error = null;
-            try {
-                const chapterId = this.chapterId || 'chapter1';
-                const response = await fetch(`/data/class${this.classNum}/mathematics/${chapterId}.json`);
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                this.chapterData = await response.json();
-                this.chapterTitle = this.chapterData.chapterMetadata?.title || 'Chapter Content';
-            } catch (error) {
-                console.error('Error fetching chapter data:', error);
-                const chapterIdForError = this.chapterId || 'chapter1';
-                const filePath = `/data/class${this.classNum}/mathematics/${chapterIdForError}.json`;
-                this.error = `Unable to load the chapter content from "${filePath}". Please make sure the file exists in the public directory and try again. (${error.message})`;
-            } finally {
-                this.isLoading = false;
-            }
-        },
-        scrollToSection(index) {
-            this.activeTopicIndex = index;
-            this.activeSection = 'overview';
-            this.$nextTick(() => {
-                const element = this.$refs[`section-${index}`];
-                if (element && element[0]) {
-                    element[0].scrollIntoView({ behavior: 'smooth' });
-                }
-            });
-        },
-        goBack() {
-            this.$router.go(-1);
-        }
+methods: {
+  // Load the chapter JSON from /public/data/classX/mathematics/chapterId.json
+  async fetchChapterData() {
+    this.isLoading = true;
+    this.error = null;
+
+    try {
+      const chapterId = this.chapterId || 'chapter1'; 
+      // Since 'mathematics' is static in route, hardcode
+      const subjectFolder = 'mathematics';
+
+      const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterId}.json`;
+      console.log('Fetching chapter data from:', filePath);
+
+      const response = await fetch(filePath);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Parse and save data
+      this.chapterData = await response.json();
+      console.log('Loaded chapter data:', this.chapterData);
+
+      // Set title
+      this.chapterTitle = this.chapterData.chapterMetadata?.title || 'Chapter Content';
+    } catch (error) {
+      console.error('Error fetching chapter data:', error);
+      const subjectFolder = 'mathematics';
+      const chapterIdForError = this.chapterId || 'chapter1';
+      const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterIdForError}.json`;
+      this.error = `Unable to load the chapter content from "${filePath}". Please make sure the file exists in the public directory and try again. (${error.message})`;
+    } finally {
+      this.isLoading = false;
     }
+  },
+
+  // Scroll in Overview tab to a specific section
+  scrollToSection(index) {
+    this.activeTopicIndex = index;
+    this.activeSection = 'overview'; 
+    this.$nextTick(() => {
+      const element = this.$refs[`section-${index}`];
+      if (element && element[0]) {
+        element[0].scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  },
+
+  // Browser back
+  goBack() {
+    this.$router.go(-1);
+  },
+
+  // Select a personality from list
+  selectPersonality(personality) {
+    if (!personality) return;
+    this.selectedPersonality = personality;
+    // Reset chat UI for new selection
+    this.chatHistory = [];
+    this.userMessage = '';
+    console.log('Selected personality:', personality.name);
+  },
+
+  // Send a message in chatbot mode
+  sendMessage() {
+    if (!this.userMessage.trim() || !this.selectedPersonality) return;
+
+    const question = this.userMessage.trim();
+    // Add user message
+    this.chatHistory.push({ sender: 'user', text: question });
+
+    // Find exact match (case-insensitive) in selected person's chat Q&A
+    let foundQA = null;
+    if (Array.isArray(this.selectedPersonality.chat)) {
+      foundQA = this.selectedPersonality.chat.find(
+        qa => qa.question.toLowerCase() === question.toLowerCase()
+      );
+    }
+
+    // Add bot response
+    if (foundQA) {
+      this.chatHistory.push({ sender: 'bot', text: foundQA.answer });
+    } else {
+      this.chatHistory.push({ sender: 'bot', text: 'This is not related to the context' });
+    }
+
+    // Clear user input
+    this.userMessage = '';
+  }
+}
+
 }
 </script>
 <style scoped>

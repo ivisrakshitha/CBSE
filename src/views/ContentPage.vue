@@ -15,6 +15,7 @@
       </div>
     </nav>
 
+
     <!-- Chapter Header -->
     <header>
       <h1>{{ chapterTitle.toUpperCase() }}</h1>
@@ -25,6 +26,7 @@
           chapterData.chapterMetadata.strand }}</span>
       </div>
     </header>
+
 
     <!-- Section Navigation Bar -->
     <nav class="section-nav">
@@ -50,8 +52,13 @@
           class="nav-item">
           Exercises
         </button>
+        <button @click="activeSection = 'personalities'" :class="{ active: activeSection === 'personalities' }" 
+          class="nav-item">
+          Talk to Person
+        </button>
       </div>
     </nav>
+
 
     <!-- Loading State -->
     <div class="main-content" v-if="isLoading">
@@ -60,6 +67,7 @@
         <p>Loading chapter content...</p>
       </div>
     </div>
+
 
     <!-- Error State -->
     <div class="main-content" v-else-if="error">
@@ -71,6 +79,7 @@
       </div>
     </div>
 
+
     <!-- Main Content with Sidebar -->
     <div class="main-content" v-else>
       <!-- Sidebar -->
@@ -78,6 +87,7 @@
         <div class="sidebar-header">
           <h3>Chapter Contents</h3>
         </div>
+
 
         <!-- Chapter Overview in Sidebar -->
         <div class="sidebar-section" v-if="chapterData.chapterMetadata">
@@ -87,6 +97,7 @@
               :text="'This chapter covers ' + chapterData.chapterMetadata.title + ' for Class ' + chapterData.chapterMetadata.grade + '.'">
             </TypewriterText>
           </div>
+
 
           <div
             v-if="chapterData.chapterMetadata.learningObjectives && chapterData.chapterMetadata.learningObjectives.length > 0"
@@ -100,6 +111,7 @@
           </div>
         </div>
 
+
         <!-- Main Topics Navigation -->
         <div class="sidebar-section">
           <h4>Main Topics</h4>
@@ -112,11 +124,13 @@
         </div>
       </aside>
 
+
       <!-- Content Area -->
       <main class="content-area">
         <!-- Chapter Overview Section -->
         <div v-show="activeSection === 'overview'" class="content-section">
           <h2>Chapter Overview</h2>
+
 
           <div
             v-if="chapterData.chapterMetadata && chapterData.chapterMetadata.prerequisites && chapterData.chapterMetadata.prerequisites.length > 0"
@@ -130,14 +144,17 @@
             </div>
           </div>
 
+
           <!-- Section Content -->
           <div v-for="(section, index) in chapterData.sections" :key="'section-' + index" :ref="'section-' + index"
             class="section-content">
             <h2>{{ section.title }}</h2>
 
+
             <div class="content-block section-summary">
               <TypewriterText :text="section.summary"></TypewriterText>
             </div>
+
 
             <!-- Key Concepts -->
             <div v-if="section.keyConcepts && section.keyConcepts.length > 0" class="content-block key-concepts">
@@ -149,6 +166,7 @@
                     <TypewriterText :text="concept.description"></TypewriterText>
                   </div>
 
+
                   <div v-if="concept.properties && concept.properties.length > 0" class="concept-properties">
                     <h5>Properties:</h5>
                     <div class="properties-list">
@@ -157,6 +175,7 @@
                       </div>
                     </div>
                   </div>
+
 
                   <div v-if="concept.examples && concept.examples.length > 0" class="concept-examples">
                     <h5>Examples:</h5>
@@ -169,6 +188,7 @@
                 </div>
               </div>
             </div>
+
 
             <!-- Theorems -->
             <div v-if="section.theorems && section.theorems.length > 0" class="content-block theorems">
@@ -190,6 +210,7 @@
               </div>
             </div>
 
+
             <!-- Examples -->
             <div v-if="section.examples && section.examples.length > 0" class="content-block examples">
               <h3>Examples</h3>
@@ -207,9 +228,11 @@
           </div>
         </div>
 
+
         <!-- Teaching Resources Section -->
         <div v-show="activeSection === 'resources'" class="content-section">
           <h2>Teaching Resources</h2>
+
 
           <div v-if="chapterData.teachingResources">
             <!-- Key Vocabulary -->
@@ -227,6 +250,7 @@
                 </div>
               </div>
             </div>
+
 
             <!-- Common Misconceptions -->
             <div
@@ -250,9 +274,11 @@
           </div>
         </div>
 
+
         <!-- Practical Applications Section -->
         <div v-show="activeSection === 'applications'" class="content-section">
           <h2>Practical Applications</h2>
+
 
           <div v-if="chapterData.practicalApplications && chapterData.practicalApplications.length > 0"
             class="applications-container">
@@ -266,15 +292,18 @@
           </div>
         </div>
 
+
         <!-- Mathematical Heritage Section -->
         <div v-show="activeSection === 'heritage'" class="content-section">
           <h2>Mathematical Heritage</h2>
+
 
           <div v-if="chapterData.mathematicalHeritage">
             <div v-if="chapterData.mathematicalHeritage.historicalContext" class="content-block historical-context">
               <h3>Historical Context</h3>
               <TypewriterText :text="chapterData.mathematicalHeritage.historicalContext"></TypewriterText>
             </div>
+
 
             <div
               v-if="chapterData.mathematicalHeritage.indianContributions && chapterData.mathematicalHeritage.indianContributions.length > 0"
@@ -288,6 +317,7 @@
               </div>
             </div>
 
+
             <div v-if="chapterData.mathematicalHeritage.culturalSignificance"
               class="content-block cultural-significance">
               <h3>Cultural Significance</h3>
@@ -296,29 +326,59 @@
           </div>
         </div>
 
+
         <!-- Visual Learning Resources Section -->
         <div v-show="activeSection === 'visual'" class="content-section">
           <h2>Visual Learning Resources</h2>
+
 
           <div class="content-block">
             <GoogleSearchResults :initialQuery="chapterTitle" :searchContext="subject" :apiKey="googleApiKey"
               :searchEngineId="googleSearchEngineId" />
           </div>
         </div>
+        
+        <!-- Talk to Person Section -->
+<div v-show="activeSection === 'personalities'" class="content-section">
+  <h2>Talk to Person</h2>
+  
+  <div v-if="!selectedPersonality" class="personalities-grid">
+    <div v-for="personality in chapterData.personalities" :key="personality.id" 
+         @click="selectPersonality(personality)" 
+         class="personality-card">
+      <div class="personality-avatar">
+        <img :src="personality.image" :alt="personality.name" />
+      </div>
+      <div class="personality-info">
+        <h3>{{ personality.name }}</h3>
+        <p class="personality-description">{{ personality.description }}</p>
+      </div>
+    </div>
+  </div>
+
+  <div v-if="selectedPersonality" class="chatbot-interface">
+    <PersonalityChat 
+      :personalities="selectedPersonality" 
+      @back-to-list="selectedPersonality = null" />
+  </div>
+</div>
 
         <!-- Exercises Section -->
         <div v-show="activeSection === 'exercises'" class="content-section">
           <h2>Exercises</h2>
+
 
           <div v-for="(section, index) in chapterData.sections" :key="'exercise-' + index" class="content-block">
             <h3>{{ section.title }} - Exercises</h3>
             <AIExercises :sectionData="section" :chapterMetadata="chapterData.chapterMetadata" />
           </div>
         </div>
+
       </main>
     </div>
   </div>
 </template>
+
 
 <script>
 import IvisLabsLogo from '../components/IvisLabsLogo.vue'
@@ -326,6 +386,8 @@ import TypewriterText from '../components/TypewriterText.vue'
 //import CollapsibleCard from '../components/CollapsibleCard.vue'
 import GoogleSearchResults from '../components/GoogleSearchResults.vue'
 import AIExercises from '../components/AIExercises.vue'
+import PersonalityChat from '../components/PersonalityChat.vue'
+
 
 export default {
   name: 'ContentPage',
@@ -334,7 +396,8 @@ export default {
     TypewriterText,
     //CollapsibleCard,
     GoogleSearchResults,
-    AIExercises
+    AIExercises,
+    PersonalityChat
   },
   data() {
     return {
@@ -342,6 +405,7 @@ export default {
       chapterData: {},
       chapterTitle: '',
       error: null,
+      selectedPersonality: null,
       activeSection: 'overview', // Default active section
       activeTopicIndex: 0, // Default active topic
       googleApiKey: process.env.VUE_APP_GOOGLE_API_KEY || '',
@@ -378,19 +442,24 @@ export default {
       this.isLoading = true;
       this.error = null;
 
+
       try {
         // Build the path to the JSON file
         const chapterId = this.chapterId || 'chapter1'; // Default to chapter1 if not specified
 
+
         // Use fetch to get the JSON file from the public directory
         const response = await fetch(`/data/class${this.classNum}/${this.subjectParam}/${chapterId}.json`);
+
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
 
+
         // Parse the JSON data
         this.chapterData = await response.json();
+
 
         // Set chapter title from the metadata
         this.chapterTitle = this.chapterData.chapterMetadata?.title || 'Chapter Content';
@@ -403,6 +472,10 @@ export default {
         this.isLoading = false;
       }
     },
+    selectPersonality(personality) {
+  this.selectedPersonality = personality;
+},
+
 
     scrollToSection(index) {
       this.activeTopicIndex = index;
@@ -414,6 +487,7 @@ export default {
         }
       });
     },
+
 
     goBack() {
       this.$router.go(-1);
@@ -1066,5 +1140,7 @@ h5 {
   .content-page {
     padding: 20px 10px;
   }
+
+  
 }
 </style>
