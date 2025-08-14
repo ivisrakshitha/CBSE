@@ -23,25 +23,25 @@
             </div>
         </header>
 
-        <!-- Chapter Title Section -->
+        <!-- Compact Chapter Title Section -->
         <section class="chapter-hero">
             <div class="hero-content">
                 <div class="chapter-info">
-                    <h1 class="chapter-title">{{ chapterTitle }}</h1>
-                    <div class="chapter-badges">
-                        <span class="badge subject-badge">{{ chapterData.chapterMetadata?.subject || 'Social Science'
-                        }}</span>
-                        <span class="badge grade-badge">Class {{ classNum }}</span>
-                        <span v-if="chapterData.chapterMetadata?.discipline" class="badge discipline-badge">
-                            {{ chapterData.chapterMetadata.discipline }}
-                        </span>
-                    </div>
-                </div>
+                    <h1 class="chapter-title">📚 {{ chapterTitle }}</h1>
+                    <div class="chapter-meta">
+                        <div class="chapter-badges">
+                            <span class="badge subject-badge">
+                                {{ chapterData.chapterMetadata?.subject || 'Social Science' }}
+                            </span>
 
-                <div v-if="chapterData.chapterMetadata?.timePeriodsOrRegions" class="time-period-card">
-                    <h3>Historical Period</h3>
-                    <div class="period-info">
-                        {{ chapterData.chapterMetadata.timePeriodsOrRegions[0] }}
+                            <span class="badge grade-badge">Class {{ classNum }}</span>
+                            <span v-if="chapterData.chapterMetadata?.discipline" class="badge discipline-badge">
+                                {{ chapterData.chapterMetadata.discipline }}
+                            </span>
+                        </div>
+                        <div v-if="chapterData.chapterMetadata?.timePeriodsOrRegions" class="period-tag">
+                            🏛️ {{ chapterData.chapterMetadata.timePeriodsOrRegions[0] }}
+                        </div>
                     </div>
                 </div>
             </div>
@@ -285,6 +285,42 @@
                         </div>
                     </div>
                 </section>
+
+                <!-- Talk to Person Section -->
+                <section v-show="activeSection === 'personalities'" class="content-section">
+                    <div class="section-header">
+                        <h2>👥 Talk to Historical Personalities</h2>
+                        <p class="section-description">Engage in conversations with historical figures from this chapter
+                        </p>
+                    </div>
+
+                    <!-- Personality list (names only) -->
+                    <div v-if="!selectedPersonality" class="content-card personalities-card">
+                        <h3>Available Historical Personalities</h3>
+                        <div v-if="chapterData.personalities?.length" class="personalities-grid">
+                            <div v-for="personality in chapterData.personalities" :key="personality.id"
+                                @click="selectPersonality(personality)" class="personality-item">
+                                <div class="personality-avatar">
+                                    <span class="avatar-icon">👤</span>
+                                </div>
+                                <div class="personality-info">
+                                    <h4 class="personality-name">{{ personality.name }}</h4>
+                                    <p class="personality-title" v-if="personality.title">{{ personality.title }}</p>
+                                    <p class="personality-period" v-if="personality.period">{{ personality.period }}</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div v-else class="no-personalities">
+                            <p>No historical personalities available for this chapter.</p>
+                        </div>
+                    </div>
+
+                    <!-- Chat view - PersonalityChat handles its own fullscreen -->
+                    <div v-else class="chat-container">
+                        <PersonalityChat :personality="selectedPersonality"
+                            @back-to-list="selectedPersonality = null" />
+                    </div>
+                </section>
             </main>
         </div>
     </div>
@@ -294,13 +330,15 @@
 import IvisLabsLogo from '../../components/IvisLabsLogo.vue'
 import TypewriterText from '../../components/TypewriterText.vue'
 import GoogleSearchResults from '../../components/GoogleSearchResults.vue'
+import PersonalityChat from '../../components/PersonalityChat.vue'
 
 export default {
     name: 'SocialScienceContentPage',
     components: {
         IvisLabsLogo,
         TypewriterText,
-        GoogleSearchResults
+        GoogleSearchResults,
+        PersonalityChat
     },
     data() {
         return {
@@ -309,6 +347,9 @@ export default {
             chapterTitle: '',
             error: null,
             activeSection: 'overview',
+            selectedPersonality: null,
+            userMessage: '',
+            chatHistory: [],
             googleApiKey: process.env.VUE_APP_GOOGLE_API_KEY || '',
             googleSearchEngineId: process.env.VUE_APP_GOOGLE_SEARCH_ENGINE_ID || '',
             navigationTabs: [
@@ -317,7 +358,8 @@ export default {
                 { id: 'resources', label: 'Resources', icon: '📚' },
                 { id: 'perspectives', label: 'Perspectives', icon: '🌍' },
                 { id: 'visual', label: 'Visual Sources', icon: '🖼️' },
-                { id: 'assessment', label: 'Assessment', icon: '✅' }
+                { id: 'assessment', label: 'Assessment', icon: '✅' },
+                { id: 'personalities', label: 'Talk to Person', icon: '👥' }
             ]
         }
     },
@@ -347,6 +389,7 @@ export default {
                 }
                 this.chapterData = await response.json();
                 this.chapterTitle = this.chapterData.chapterMetadata?.title || 'Chapter Content';
+                console.log('Loaded chapter data:', this.chapterData);
             } catch (error) {
                 console.error('Error fetching chapter data:', error);
                 const chapterIdForError = this.chapterId || 'chapter1';
@@ -356,8 +399,46 @@ export default {
                 this.isLoading = false;
             }
         },
+
         goBack() {
             this.$router.go(-1);
+        },
+
+        // Select a personality from list
+        selectPersonality(personality) {
+            if (!personality) return;
+            this.selectedPersonality = personality;
+            // Reset chat UI for new selection
+            this.chatHistory = [];
+            this.userMessage = '';
+            console.log('Selected personality:', personality.name);
+        },
+
+        // Send a message in chatbot mode
+        sendMessage() {
+            if (!this.userMessage.trim() || !this.selectedPersonality) return;
+
+            const question = this.userMessage.trim();
+            // Add user message
+            this.chatHistory.push({ sender: 'user', text: question });
+
+            // Find exact match (case-insensitive) in selected person's chat Q&A
+            let foundQA = null;
+            if (Array.isArray(this.selectedPersonality.chat)) {
+                foundQA = this.selectedPersonality.chat.find(
+                    qa => qa.question.toLowerCase() === question.toLowerCase()
+                );
+            }
+
+            // Add bot response
+            if (foundQA) {
+                this.chatHistory.push({ sender: 'bot', text: foundQA.answer });
+            } else {
+                this.chatHistory.push({ sender: 'bot', text: 'This is not related to the context' });
+            }
+
+            // Clear user input
+            this.userMessage = '';
         }
     }
 }

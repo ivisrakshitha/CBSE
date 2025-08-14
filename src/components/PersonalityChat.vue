@@ -10,7 +10,7 @@
     <div class="chat-section" :class="{ 'fullscreen-chat': isFullscreen }">
       <div class="chat-header">
         <button class="back-btn" @click="$emit('back-to-list')" v-if="!isFullscreen">⬅ Back</button>
-        
+
         <!-- Personality DP like WhatsApp (Only in normal mode) -->
         <div class="header-profile" v-if="!isFullscreen">
           <img :src="personality.image" alt="profile" class="profile-pic" />
@@ -24,14 +24,16 @@
 
         <!-- Controls -->
         <div class="header-controls">
-          <button @click="toggleWallpaper" class="wallpaper-btn" :title="wallpaperEnabled ? 'Remove Wallpaper' : 'Set as Wallpaper'" v-if="!isFullscreen">
+          <button @click="toggleWallpaper" class="wallpaper-btn"
+            :title="wallpaperEnabled ? 'Remove Wallpaper' : 'Set as Wallpaper'" v-if="!isFullscreen">
             {{ wallpaperEnabled ? '🚫' : '🎨' }}
           </button>
-          
-          <button @click="toggleFullscreen" class="fullscreen-btn" :title="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'">
+
+          <button @click="toggleFullscreen" class="fullscreen-btn"
+            :title="isFullscreen ? 'Exit Fullscreen' : 'Enter Fullscreen'">
             {{ isFullscreen ? '🗗' : '🗖' }}
           </button>
-          
+
           <button class="back-btn" @click="$emit('back-to-list')" v-if="isFullscreen">❌</button>
         </div>
       </div>
@@ -39,24 +41,16 @@
       <div class="chat-messages" ref="messagesContainer" :style="chatBackgroundStyle">
         <!-- Wallpaper overlay for better text readability (Only in normal mode) -->
         <div v-if="wallpaperEnabled && !isFullscreen" class="wallpaper-overlay"></div>
-        
-        <div
-          v-for="(msg, index) in messages"
-          :key="index"
-          :class="['message', msg.sender]"
-        >
+
+        <div v-for="(msg, index) in messages" :key="index" :class="['message', msg.sender]">
           <!-- Bot message with DP -->
           <div v-if="msg.sender === 'bot'" class="msg-with-dp">
             <img :src="personality.image" alt="bot-dp" class="msg-dp" v-if="!isFullscreen" />
             <div class="bubble">
               {{ msg.text }}
               <!-- Play audio button for bot messages -->
-              <button 
-                v-if="msg.text !== 'Sorry, I couldn\'t process your question right now.'"
-                @click="speakText(msg.text)" 
-                class="speak-btn"
-                :disabled="isSpeaking"
-              >
+              <button v-if="msg.text !== 'Sorry, I couldn\'t process your question right now.'"
+                @click="speakText(msg.text)" class="speak-btn" :disabled="isSpeaking">
                 {{ isSpeaking ? '🔊' : '🔈' }}
               </button>
             </div>
@@ -82,28 +76,16 @@
       </div>
 
       <div class="chat-input">
-        <input
-          v-model="input"
-          @keyup.enter="send"
+        <input v-model="input" @keyup.enter="send"
           :placeholder="isFullscreen ? `Ask ${personality.name} something...` : 'Ask something...'"
-          :disabled="isLoading || isListening"
-        />
-        
+          :disabled="isLoading || isListening" />
+
         <!-- Voice input button -->
-        <button 
-          @click="toggleVoiceInput" 
-          class="voice-btn"
-          :class="{ 'listening': isListening }"
-          :disabled="isLoading"
-        >
+        <button @click="toggleVoiceInput" class="voice-btn" :class="{ 'listening': isListening }" :disabled="isLoading">
           {{ isListening ? '🎙️' : '🎤' }}
         </button>
-        
-        <button 
-          @click="send" 
-          class="send-btn"
-          :disabled="isLoading || isListening"
-        >
+
+        <button @click="send" class="send-btn" :disabled="isLoading || isListening">
           {{ isLoading ? '...' : 'Send' }}
         </button>
       </div>
@@ -157,7 +139,7 @@ export default {
     this.initializeSpeechRecognition();
     this.initializeSpeechSynthesis();
     this.loadWallpaperSetting();
-    
+
     // Handle ESC key to exit fullscreen
     document.addEventListener('keydown', this.handleKeyPress);
   },
@@ -181,7 +163,7 @@ export default {
           this.personality.description
         );
         this.messages.push({ sender: "bot", text: botReply });
-        
+
         // Auto-speak bot reply in fullscreen mode for immersive experience
         if (this.isFullscreen) {
           this.speakText(botReply);
@@ -204,19 +186,19 @@ export default {
       const OLLAMA_API_KEY = "sk-bf725748416143d88b7ea444d68f0c90";
       const OLLAMA_MODEL = "llama3.2-vision:latest";
 
+      let personalityPrompt = "";
+      try {
+        personalityPrompt = (await import(`../prompts/personalityPrompts/${this.personality.id}Prompt.js`)).default;
+      } catch (err) {
+        console.warn("No specific prompt found, using description.");
+        personalityPrompt = description; // fallback
+      }
+
       const prompt = `
-You are an expert answering questions strictly based on the following personality description.
-
-Personality Description:
-${description}
-
-Rules:
-- Only answer using the information given in the description.
-- If the question cannot be answered from the description, reply: "I couldn't find anything related to your question."
-- Keep your answer concise and clear.
+${personalityPrompt}
 
 Question: ${question}
-      `;
+  `;
 
       const response = await fetch(
         "https://chat.ivislabs.in/api/chat/completions",
@@ -251,7 +233,7 @@ Question: ${question}
       if ('webkitSpeechRecognition' in window || 'SpeechRecognition' in window) {
         const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
         this.recognition = new SpeechRecognition();
-        
+
         this.recognition.continuous = false;
         this.recognition.interimResults = false;
         this.recognition.lang = 'en-US';
@@ -378,7 +360,7 @@ Question: ${question}
     // Fullscreen functionality
     toggleFullscreen() {
       this.isFullscreen = !this.isFullscreen;
-      
+
       // Prevent/restore body scroll when entering/exiting fullscreen
       if (this.isFullscreen) {
         document.body.style.overflow = 'hidden';
@@ -417,10 +399,12 @@ Question: ${question}
   background-color: #121212;
   color: #e0e0e0;
 }
+
 .personality-list h2 {
   text-align: center;
   margin-bottom: 20px;
 }
+
 .personality-card {
   display: flex;
   align-items: center;
@@ -432,10 +416,12 @@ Question: ${question}
   cursor: pointer;
   transition: transform 0.15s ease, background-color 0.15s ease;
 }
+
 .personality-card:hover {
   background-color: rgba(23, 181, 181, 0.15);
   transform: translateY(-2px);
 }
+
 .list-profile-pic {
   width: 50px;
   height: 50px;
@@ -443,13 +429,16 @@ Question: ${question}
   object-fit: cover;
   border: 2px solid #17b5b5;
 }
+
 .personality-info {
   margin-left: 12px;
 }
+
 .personality-info h4 {
   margin: 0;
   font-size: 1.1rem;
 }
+
 .personality-info p {
   margin: 4px 0 0;
   font-size: 0.85rem;
@@ -487,15 +476,19 @@ Question: ${question}
 
 /* FULLSCREEN PERSONALITY DISPLAY (3/4 of screen) - No overlay text */
 .fullscreen-personality {
-  height: 75vh;
+  height: 100vh;
   width: 100%;
   position: relative;
   overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
+
 .personality-full-image {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
+  height: 100vh;
   object-fit: cover;
   object-position: center;
 }
@@ -553,7 +546,8 @@ Question: ${question}
   gap: 8px;
 }
 
-.wallpaper-btn, .fullscreen-btn {
+.wallpaper-btn,
+.fullscreen-btn {
   background: none;
   border: 1px solid #2c2c2c;
   color: #e0e0e0;
@@ -570,7 +564,7 @@ Question: ${question}
   border-color: rgba(255, 255, 255, 0.3);
 }
 
-.wallpaper-btn:hover, 
+.wallpaper-btn:hover,
 .fullscreen-btn:hover {
   background-color: rgba(23, 181, 181, 0.15);
   border-color: #17b5b5;
@@ -636,12 +630,10 @@ Question: ${question}
   left: 0;
   right: 0;
   bottom: 0;
-  background: linear-gradient(
-    135deg,
-    rgba(0, 0, 0, 0.6) 0%,
-    rgba(0, 0, 0, 0.4) 50%,
-    rgba(0, 0, 0, 0.6) 100%
-  );
+  background: linear-gradient(135deg,
+      rgba(0, 0, 0, 0.6) 0%,
+      rgba(0, 0, 0, 0.4) 50%,
+      rgba(0, 0, 0, 0.6) 100%);
   pointer-events: none;
   z-index: 1;
 }
@@ -649,10 +641,12 @@ Question: ${question}
 .chat-messages::-webkit-scrollbar {
   width: 6px;
 }
+
 .chat-messages::-webkit-scrollbar-thumb {
   background-color: #17b5b5;
   border-radius: 10px;
 }
+
 .chat-messages::-webkit-scrollbar-track {
   background-color: rgba(44, 44, 44, 0.3);
 }
@@ -663,9 +657,11 @@ Question: ${question}
   z-index: 2;
   flex-shrink: 0;
 }
+
 .message.user {
   justify-content: flex-end;
 }
+
 .message.bot {
   justify-content: flex-start;
 }
@@ -764,10 +760,14 @@ Question: ${question}
 }
 
 @keyframes typing {
-  0%, 60%, 100% {
+
+  0%,
+  60%,
+  100% {
     transform: translateY(0);
     opacity: 0.7;
   }
+
   30% {
     transform: translateY(-10px);
     opacity: 1;
@@ -794,6 +794,7 @@ Question: ${question}
 .speak-btn:hover {
   background-color: rgba(23, 181, 181, 0.15);
 }
+
 .speak-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
@@ -840,6 +841,7 @@ Question: ${question}
 .chat-input input:focus {
   border-color: #17b5b5;
 }
+
 .chat-input input:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -865,20 +867,30 @@ Question: ${question}
 .voice-btn:hover {
   background-color: #17b5b5;
 }
+
 .voice-btn.listening {
   background-color: #ff4444;
   border-color: #ff4444;
   animation: pulse 1s infinite;
 }
+
 .voice-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.05); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.05);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
 
 .send-btn {
@@ -891,9 +903,11 @@ Question: ${question}
   font-weight: bold;
   transition: background 0.2s ease;
 }
+
 .send-btn:hover:not(:disabled) {
   background-color: #139999;
 }
+
 .send-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
@@ -938,6 +952,7 @@ Question: ${question}
   cursor: pointer;
   font-size: 0.9rem;
 }
+
 .stop-speak-btn:hover {
   background-color: #cc3333;
 }
@@ -947,31 +962,32 @@ Question: ${question}
     border-radius: 0;
     height: 100vh;
   }
-  
+
   .bubble {
     max-width: 90%;
   }
-  
+
   .chat-input {
     flex-wrap: wrap;
     padding: 8px;
   }
-  
+
   .voice-btn {
     font-size: 1rem;
     padding: 8px 10px;
   }
-  
+
   .header-controls {
     flex-wrap: wrap;
     gap: 4px;
   }
-  
-  .wallpaper-btn, .fullscreen-btn {
+
+  .wallpaper-btn,
+  .fullscreen-btn {
     font-size: 0.8rem;
     padding: 4px 6px;
   }
-  
+
   .fullscreen-header h3 {
     font-size: 1.2rem;
   }
