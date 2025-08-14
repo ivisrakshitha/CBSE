@@ -3,10 +3,7 @@
     <!-- Fullscreen Personality Display (Only visible in fullscreen) -->
     <div v-if="isFullscreen" class="fullscreen-personality">
       <img :src="personality.image" alt="personality" class="personality-full-image" />
-      <div class="personality-info-overlay">
-        <h2>{{ personality.name }}</h2>
-        <p>{{ personality.description }}</p>
-      </div>
+      <!-- Removed the description overlay as requested -->
     </div>
 
     <!-- Chat Section -->
@@ -381,11 +378,19 @@ Question: ${question}
     // Fullscreen functionality
     toggleFullscreen() {
       this.isFullscreen = !this.isFullscreen;
+      
+      // Prevent/restore body scroll when entering/exiting fullscreen
+      if (this.isFullscreen) {
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.body.style.overflow = 'auto';
+      }
     },
 
     handleKeyPress(event) {
       if (event.key === 'Escape' && this.isFullscreen) {
         this.isFullscreen = false;
+        document.body.style.overflow = 'auto';
       }
     }
   },
@@ -399,6 +404,8 @@ Question: ${question}
       this.synthesis.cancel();
     }
     document.removeEventListener('keydown', this.handleKeyPress);
+    // Restore body scroll on unmount
+    document.body.style.overflow = 'auto';
   }
 };
 </script>
@@ -478,7 +485,7 @@ Question: ${question}
   margin: 0;
 }
 
-/* FULLSCREEN PERSONALITY DISPLAY (3/4 of screen) */
+/* FULLSCREEN PERSONALITY DISPLAY (3/4 of screen) - No overlay text */
 .fullscreen-personality {
   height: 75vh;
   width: 100%;
@@ -491,32 +498,6 @@ Question: ${question}
   height: 100%;
   object-fit: cover;
   object-position: center;
-}
-
-.personality-info-overlay {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
-  color: white;
-  padding: 40px 20px 20px;
-  text-align: center;
-}
-
-.personality-info-overlay h2 {
-  font-size: 3rem;
-  margin: 0 0 10px 0;
-  text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
-}
-
-.personality-info-overlay p {
-  font-size: 1.2rem;
-  margin: 0;
-  opacity: 0.9;
-  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.7);
-  max-width: 800px;
-  margin: 0 auto;
 }
 
 /* CHAT SECTION */
@@ -965,14 +946,6 @@ Question: ${question}
   .chat-container {
     border-radius: 0;
     height: 100vh;
-  }
-  
-  .fullscreen-mode .personality-info-overlay h2 {
-    font-size: 2rem;
-  }
-  
-  .fullscreen-mode .personality-info-overlay p {
-    font-size: 1rem;
   }
   
   .bubble {

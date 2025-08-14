@@ -1,4 +1,3 @@
-<!-- src/views/subjects/MathematicsContentPage.vue -->
 <template>
     <div class="content-page">
         <!-- Navigation Bar -->
@@ -326,7 +325,7 @@
     </ul>
   </div>
 
-  <!-- Chat view -->
+  <!-- Chat view - PersonalityChat handles its own fullscreen -->
   <div v-else>
     <PersonalityChat 
       :personality="selectedPersonality" 
@@ -750,6 +749,26 @@ header h1 {
 
 .section-content:last-child {
     border-bottom: none;
+}
+
+/* Personality Names List */
+.personality-name {
+    list-style: none;
+    padding: 15px 20px;
+    margin: 10px 0;
+    background: rgba(23, 181, 181, 0.1);
+    border-radius: 10px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    border-left: 4px solid #17b5b5;
+    color: #ffffff;
+    font-weight: 500;
+}
+
+.personality-name:hover {
+    background: rgba(23, 181, 181, 0.2);
+    transform: translateX(5px);
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.2);
 }
 
 /* Content Blocks */
