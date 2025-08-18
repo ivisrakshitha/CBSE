@@ -265,6 +265,7 @@ header p {
 }
 
 /* Card 3 - Mathematics (center, large) */
+/* Card 3 - Mathematics (center, large) */
 .card-mathematics {
   left: calc(44.5% - 60px);
   top: 50%;

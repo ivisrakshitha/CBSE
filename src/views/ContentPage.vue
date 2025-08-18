@@ -326,7 +326,7 @@
           </div>
         </div>
 
-
+<!-- Visual Learning Resources Section -->
         <!-- Visual Learning Resources Section -->
         <div v-show="activeSection === 'visual'" class="content-section">
           <h2>Visual Learning Resources</h2>
