@@ -309,31 +309,87 @@
                         <AIExercises :sectionData="section" :chapterMetadata="chapterData.chapterMetadata" />
                     </div>
                 </div>
-<!-- Talk to Person Section -->
-<div v-show="activeSection === 'personalities'" class="content-section">
-  <h2>Talk to Person</h2>
+                
+                <!-- Talk to Person Section -->
+                <div v-show="activeSection === 'personalities'" class="content-section">
+                    <div class="section-header-with-button">
+                        <h2>Talk to Person</h2>
+                        <button @click="openPersonalityPopup" class="enlarge-button">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            </svg>
+                            Open Fullscreen
+                        </button>
+                    </div>
 
-  <!-- Personality list (names only) -->
-  <div v-if="!selectedPersonality">
-    <ul>
-      <li v-for="personality in chapterData.personalities" 
-          :key="personality.id"
-          @click="selectPersonality(personality)"
-          class="personality-name">
-        {{ personality.name }}
-      </li>
-    </ul>
-  </div>
+                    <!-- Regular inline view -->
+                    <div class="personalities-inline-view">
+                        <!-- Personality list (names only) -->
+                        <div v-if="!selectedPersonality">
+                            <ul>
+                                <li v-for="personality in chapterData.personalities" 
+                                    :key="personality.id"
+                                    @click="selectPersonality(personality)"
+                                    class="personality-name">
+                                    {{ personality.name }}
+                                </li>
+                            </ul>
+                        </div>
 
-  <!-- Chat view - PersonalityChat handles its own fullscreen -->
-  <div v-else>
-    <PersonalityChat 
-      :personality="selectedPersonality" 
-      @back-to-list="selectedPersonality = null" />
-  </div>
-</div>
-
+                        <!-- Chat view -->
+                        <div v-else>
+                            <PersonalityChat 
+                                :personality="selectedPersonality" 
+                                @back-to-list="selectedPersonality = null" />
+                        </div>
+                    </div>
+                </div>
             </main>
+        </div>
+
+        <!-- Fullscreen Personality Popup -->
+        <div v-if="isPersonalityPopupOpen" class="personality-popup-overlay" @click.self="closePersonalityPopup">
+            <div class="personality-popup-container">
+                <!-- Popup Header -->
+                <div class="personality-popup-header">
+                    <h1>Talk to Person - Interactive Learning</h1>
+                    <div class="popup-controls">
+                        <button @click="closePersonalityPopup" class="close-popup-button">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M18 6L6 18M6 6l12 12"></path>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Popup Content -->
+                <div class="personality-popup-content">
+                    <!-- Personality list in popup -->
+                    <div v-if="!selectedPersonalityPopup" class="personalities-grid">
+                        <h3>Choose a Historical Figure to Learn From</h3>
+                        <div class="personality-cards-grid">
+                            <div v-for="personality in chapterData.personalities" 
+                                 :key="personality.id"
+                                 @click="selectPersonalityPopup(personality)"
+                                 class="personality-card">
+                                <div class="personality-avatar">
+                                    {{ personality.name.charAt(0) }}
+                                </div>
+                                <h4>{{ personality.name }}</h4>
+                                <p class="personality-brief">{{ personality.description || 'Learn from this mathematical genius' }}</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Chat view in popup -->
+                    <div v-else class="personality-chat-popup">
+                        <PersonalityChat 
+                            :personality="selectedPersonalityPopup" 
+                            @back-to-list="selectedPersonalityPopup = null"
+                            :isFullscreen="true" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -361,10 +417,12 @@ export default {
             chapterTitle: '',
             error: null,
             selectedPersonality: null,
+            selectedPersonalityPopup: null,
             userMessage: '',
             chatHistory: [],
             activeSection: 'overview',
             activeTopicIndex: 0,
+            isPersonalityPopupOpen: false,
             googleApiKey: process.env.VUE_APP_GOOGLE_API_KEY || '',
             googleSearchEngineId: process.env.VUE_APP_GOOGLE_SEARCH_ENGINE_ID || ''
         }
@@ -383,99 +441,128 @@ export default {
     mounted() {
         this.fetchChapterData();
     },
-methods: {
-  // Load the chapter JSON from /public/data/classX/mathematics/chapterId.json
-  async fetchChapterData() {
-    this.isLoading = true;
-    this.error = null;
+    methods: {
+        // Load the chapter JSON from /public/data/classX/mathematics/chapterId.json
+        async fetchChapterData() {
+            this.isLoading = true;
+            this.error = null;
 
-    try {
-      const chapterId = this.chapterId || 'chapter1'; 
-      // Since 'mathematics' is static in route, hardcode
-      const subjectFolder = 'mathematics';
+            try {
+                const chapterId = this.chapterId || 'chapter1'; 
+                // Since 'mathematics' is static in route, hardcode
+                const subjectFolder = 'mathematics';
 
-      const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterId}.json`;
-      console.log('Fetching chapter data from:', filePath);
+                const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterId}.json`;
+                console.log('Fetching chapter data from:', filePath);
 
-      const response = await fetch(filePath);
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
+                const response = await fetch(filePath);
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
 
-      // Parse and save data
-      this.chapterData = await response.json();
-      console.log('Loaded chapter data:', this.chapterData);
+                // Parse and save data
+                this.chapterData = await response.json();
+                console.log('Loaded chapter data:', this.chapterData);
 
-      // Set title
-      this.chapterTitle = this.chapterData.chapterMetadata?.title || 'Chapter Content';
-    } catch (error) {
-      console.error('Error fetching chapter data:', error);
-      const subjectFolder = 'mathematics';
-      const chapterIdForError = this.chapterId || 'chapter1';
-      const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterIdForError}.json`;
-      this.error = `Unable to load the chapter content from "${filePath}". Please make sure the file exists in the public directory and try again. (${error.message})`;
-    } finally {
-      this.isLoading = false;
+                // Set title
+                this.chapterTitle = this.chapterData.chapterMetadata?.title || 'Chapter Content';
+            } catch (error) {
+                console.error('Error fetching chapter data:', error);
+                const subjectFolder = 'mathematics';
+                const chapterIdForError = this.chapterId || 'chapter1';
+                const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterIdForError}.json`;
+                this.error = `Unable to load the chapter content from "${filePath}". Please make sure the file exists in the public directory and try again. (${error.message})`;
+            } finally {
+                this.isLoading = false;
+            }
+        },
+
+        // Scroll in Overview tab to a specific section
+        scrollToSection(index) {
+            this.activeTopicIndex = index;
+            this.activeSection = 'overview'; 
+            this.$nextTick(() => {
+                const element = this.$refs[`section-${index}`];
+                if (element && element[0]) {
+                    element[0].scrollIntoView({ behavior: 'smooth' });
+                }
+            });
+        },
+
+        // Browser back
+        goBack() {
+            this.$router.go(-1);
+        },
+
+        // Select a personality from list (regular inline view)
+        selectPersonality(personality) {
+            if (!personality) return;
+            this.selectedPersonality = personality;
+            // Reset chat UI for new selection
+            this.chatHistory = [];
+            this.userMessage = '';
+            console.log('Selected personality:', personality.name);
+        },
+
+        // Open the fullscreen popup
+        openPersonalityPopup() {
+            this.isPersonalityPopupOpen = true;
+            this.selectedPersonalityPopup = null;
+            // Prevent body scroll when popup is open
+            document.body.style.overflow = 'hidden';
+        },
+
+        // Close the fullscreen popup
+        closePersonalityPopup() {
+            this.isPersonalityPopupOpen = false;
+            this.selectedPersonalityPopup = null;
+            // Restore body scroll
+            document.body.style.overflow = 'auto';
+        },
+
+        // Select a personality from list (popup view)
+        selectPersonalityPopup(personality) {
+            if (!personality) return;
+            this.selectedPersonalityPopup = personality;
+            console.log('Selected personality in popup:', personality.name);
+        },
+
+        // Send a message in chatbot mode
+        sendMessage() {
+            if (!this.userMessage.trim() || !this.selectedPersonality) return;
+
+            const question = this.userMessage.trim();
+            // Add user message
+            this.chatHistory.push({ sender: 'user', text: question });
+
+            // Find exact match (case-insensitive) in selected person's chat Q&A
+            let foundQA = null;
+            if (Array.isArray(this.selectedPersonality.chat)) {
+                foundQA = this.selectedPersonality.chat.find(
+                    qa => qa.question.toLowerCase() === question.toLowerCase()
+                );
+            }
+
+            // Add bot response
+            if (foundQA) {
+                this.chatHistory.push({ sender: 'bot', text: foundQA.answer });
+            } else {
+                this.chatHistory.push({ sender: 'bot', text: 'This is not related to the context' });
+            }
+
+            // Clear user input
+            this.userMessage = '';
+        }
+    },
+    
+    // Clean up when component is destroyed
+    beforeUnmount() {
+        // Restore body scroll if component is destroyed while popup is open
+        document.body.style.overflow = 'auto';
     }
-  },
-
-  // Scroll in Overview tab to a specific section
-  scrollToSection(index) {
-    this.activeTopicIndex = index;
-    this.activeSection = 'overview'; 
-    this.$nextTick(() => {
-      const element = this.$refs[`section-${index}`];
-      if (element && element[0]) {
-        element[0].scrollIntoView({ behavior: 'smooth' });
-      }
-    });
-  },
-
-  // Browser back
-  goBack() {
-    this.$router.go(-1);
-  },
-
-  // Select a personality from list
-  selectPersonality(personality) {
-    if (!personality) return;
-    this.selectedPersonality = personality;
-    // Reset chat UI for new selection
-    this.chatHistory = [];
-    this.userMessage = '';
-    console.log('Selected personality:', personality.name);
-  },
-
-  // Send a message in chatbot mode
-  sendMessage() {
-    if (!this.userMessage.trim() || !this.selectedPersonality) return;
-
-    const question = this.userMessage.trim();
-    // Add user message
-    this.chatHistory.push({ sender: 'user', text: question });
-
-    // Find exact match (case-insensitive) in selected person's chat Q&A
-    let foundQA = null;
-    if (Array.isArray(this.selectedPersonality.chat)) {
-      foundQA = this.selectedPersonality.chat.find(
-        qa => qa.question.toLowerCase() === question.toLowerCase()
-      );
-    }
-
-    // Add bot response
-    if (foundQA) {
-      this.chatHistory.push({ sender: 'bot', text: foundQA.answer });
-    } else {
-      this.chatHistory.push({ sender: 'bot', text: 'This is not related to the context' });
-    }
-
-    // Clear user input
-    this.userMessage = '';
-  }
-}
-
 }
 </script>
+
 <style scoped>
 /* Dark Theme for Content Page */
 .content-page {
@@ -751,6 +838,43 @@ header h1 {
     border-bottom: none;
 }
 
+/* Section Header with Button */
+.section-header-with-button {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.enlarge-button {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: linear-gradient(135deg, #17b5b5, #1ec7c7);
+    color: #121212;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 25px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.2);
+}
+
+.enlarge-button:hover {
+    background: linear-gradient(135deg, #1ec7c7, #23d5d5);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(23, 181, 181, 0.3);
+}
+
+.enlarge-button svg {
+    transition: transform 0.3s ease;
+}
+
+.enlarge-button:hover svg {
+    transform: scale(1.1);
+}
+
 /* Personality Names List */
 .personality-name {
     list-style: none;
@@ -769,6 +893,195 @@ header h1 {
     background: rgba(23, 181, 181, 0.2);
     transform: translateX(5px);
     box-shadow: 0 4px 15px rgba(23, 181, 181, 0.2);
+}
+
+/* Fullscreen Personality Popup */
+.personality-popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    animation: fadeInOverlay 0.3s ease-out;
+}
+
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.personality-popup-container {
+    width: 100%;
+    max-width: 1400px;
+    height: 90vh;
+    background: #121212;
+    border-radius: 20px;
+    border: 2px solid #17b5b5;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    animation: slideInPopup 0.4s ease-out;
+}
+
+@keyframes slideInPopup {
+    from {
+        opacity: 0;
+        transform: scale(0.9) translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1) translateY(0);
+    }
+}
+
+.personality-popup-header {
+    background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
+    padding: 25px 30px;
+    border-bottom: 2px solid #17b5b5;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.personality-popup-header h1 {
+    color: #17b5b5;
+    font-size: 1.8rem;
+    margin: 0;
+    font-weight: 700;
+}
+
+.popup-controls {
+    display: flex;
+    gap: 15px;
+}
+
+.close-popup-button {
+    background: rgba(244, 67, 54, 0.1);
+    border: 2px solid #f44336;
+    color: #f44336;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.close-popup-button:hover {
+    background: #f44336;
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.personality-popup-content {
+    flex: 1;
+    padding: 30px;
+    overflow-y: auto;
+    background: #121212;
+}
+
+/* Personalities Grid in Popup */
+.personalities-grid h3 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+    font-size: 1.5rem;
+}
+
+.personality-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 25px;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.personality-card {
+    background: linear-gradient(135deg, #1e1e1e, #2c2c2c);
+    border: 2px solid rgba(23, 181, 181, 0.3);
+    border-radius: 15px;
+    padding: 25px;
+    cursor: pointer;
+    transition: all 0.4s ease;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.personality-card::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(23, 181, 181, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.personality-card:hover::before {
+    left: 100%;
+}
+
+.personality-card:hover {
+    border-color: #17b5b5;
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(23, 181, 181, 0.2);
+}
+
+.personality-avatar {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #17b5b5, #1ec7c7);
+    color: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    font-weight: bold;
+    margin: 0 auto 20px;
+    transition: all 0.3s ease;
+}
+
+.personality-card:hover .personality-avatar {
+    transform: scale(1.1);
+    box-shadow: 0 8px 20px rgba(23, 181, 181, 0.4);
+}
+
+.personality-card h4 {
+    color: #ffffff;
+    margin: 0 0 10px;
+    font-size: 1.2rem;
+    font-weight: 600;
+}
+
+.personality-brief {
+    color: #b0b0b0;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    margin: 0;
+}
+
+/* Chat Popup */
+.personality-chat-popup {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Content Blocks */
@@ -1139,6 +1452,57 @@ h5 {
 
     .content-page {
         padding: 20px 10px;
+    }
+
+    .section-header-with-button {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .personality-popup-container {
+        height: 95vh;
+        margin: 10px;
+        border-radius: 15px;
+    }
+
+    .personality-popup-header {
+        padding: 20px;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .personality-popup-header h1 {
+        font-size: 1.4rem;
+    }
+
+    .personality-cards-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .personality-popup-content {
+        padding: 20px;
+    }
+}
+
+/* Additional Responsive for very small screens */
+@media (max-width: 480px) {
+    .personality-popup-overlay {
+        padding: 10px;
+    }
+    
+    .personality-popup-container {
+        height: 100vh;
+        max-height: none;
+        border-radius: 0;
+        margin: 0;
+    }
+    
+    .enlarge-button {
+        font-size: 0.9rem;
+        padding: 10px 16px;
     }
 }
 </style>

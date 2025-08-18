@@ -1,4 +1,3 @@
-<!-- src/views/subjects/ScienceContentPage.vue -->
 <template>
     <div class="content-page">
         <!-- Navigation Bar -->
@@ -467,11 +466,17 @@
 
                 <!-- Talk to Scientist Section -->
                 <div v-show="activeSection === 'personalities'" class="content-section">
-                    <h2>Talk to Scientist</h2>
+                    <div class="section-header-with-actions">
+                        <h2>Talk to Scientist</h2>
+                        <button @click="openPersonalitiesModal" class="enlarge-button">
+                            <span class="enlarge-icon">⛶</span>
+                            Open Fullscreen
+                        </button>
+                    </div>
 
                     <!-- Scientist list (names only) -->
                     <div v-if="!selectedPersonality">
-                        <ul>
+                        <ul class="personality-list">
                             <li v-for="personality in chapterData.personalities" :key="personality.id"
                                 @click="selectPersonality(personality)" class="personality-name">
                                 {{ personality.name }}
@@ -486,6 +491,38 @@
                     </div>
                 </div>
             </main>
+        </div>
+
+        <!-- Fullscreen Modal for Talk to Scientist -->
+        <div v-if="showPersonalitiesModal" class="fullscreen-modal" @click="closePersonalitiesModal">
+            <div class="modal-content" @click.stop>
+                <!-- Modal Header -->
+                <div class="modal-header">
+                    <h2>Talk to Scientist</h2>
+                    <button @click="closePersonalitiesModal" class="close-button">
+                        <span>&times;</span>
+                    </button>
+                </div>
+
+                <!-- Modal Body -->
+                <div class="modal-body">
+                    <!-- Scientist list (names only) -->
+                    <div v-if="!modalSelectedPersonality">
+                        <ul class="personality-list modal-list">
+                            <li v-for="personality in chapterData.personalities" :key="personality.id"
+                                @click="selectModalPersonality(personality)" class="personality-name modal-personality">
+                                {{ personality.name }}
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- Chat view -->
+                    <div v-else class="modal-chat-container">
+                        <PersonalityChat :personality="modalSelectedPersonality"
+                            @back-to-list="modalSelectedPersonality = null" />
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -513,10 +550,12 @@ export default {
             chapterTitle: '',
             error: null,
             selectedPersonality: null,
+            modalSelectedPersonality: null,
             userMessage: '',
             chatHistory: [],
             activeSection: 'overview',
             activeTopicIndex: 0,
+            showPersonalitiesModal: false,
             googleApiKey: process.env.VUE_APP_GOOGLE_API_KEY || '',
             googleSearchEngineId: process.env.VUE_APP_GOOGLE_SEARCH_ENGINE_ID || ''
         }
@@ -595,6 +634,29 @@ export default {
             this.chatHistory = [];
             this.userMessage = '';
             console.log('Selected personality:', personality.name);
+        },
+
+        // Select a personality from modal list
+        selectModalPersonality(personality) {
+            if (!personality) return;
+            this.modalSelectedPersonality = personality;
+            console.log('Selected modal personality:', personality.name);
+        },
+
+        // Open fullscreen modal
+        openPersonalitiesModal() {
+            this.showPersonalitiesModal = true;
+            this.modalSelectedPersonality = null;
+            // Prevent body scrolling when modal is open
+            document.body.style.overflow = 'hidden';
+        },
+
+        // Close fullscreen modal
+        closePersonalitiesModal() {
+            this.showPersonalitiesModal = false;
+            this.modalSelectedPersonality = null;
+            // Restore body scrolling
+            document.body.style.overflow = 'auto';
         },
 
         // Send a message in chatbot mode
@@ -710,6 +772,181 @@ header h1 {
 .strand-tag {
     background-color: rgba(255, 255, 255, 0.05);
     color: #b0b0b0;
+}
+
+/* Section Header with Actions */
+.section-header-with-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+}
+
+.enlarge-button {
+    background: linear-gradient(135deg, #17b5b5, #1ec7c7);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 25px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 0.9rem;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.3);
+}
+
+.enlarge-button:hover {
+    background: linear-gradient(135deg, #1ec7c7, #17b5b5);
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(23, 181, 181, 0.4);
+}
+
+.enlarge-icon {
+    font-size: 1.1rem;
+}
+
+/* Personality List */
+.personality-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 1rem;
+}
+
+.personality-name {
+    background: rgba(30, 30, 30, 0.8);
+    border: 1px solid #2c2c2c;
+    border-radius: 10px;
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    color: #e0e0e0;
+    font-weight: 500;
+    text-align: center;
+}
+
+.personality-name:hover {
+    background: rgba(23, 181, 181, 0.1);
+    border-color: #17b5b5;
+    color: #17b5b5;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.2);
+}
+
+/* Fullscreen Modal */
+.fullscreen-modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.95);
+    backdrop-filter: blur(10px);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: modalFadeIn 0.3s ease-out;
+}
+
+@keyframes modalFadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+.modal-content {
+    background: #121212;
+    border: 1px solid #2c2c2c;
+    border-radius: 15px;
+    width: 95vw;
+    height: 90vh;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        transform: translateY(-50px);
+        opacity: 0;
+    }
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1.5rem 2rem;
+    border-bottom: 1px solid #2c2c2c;
+    background: rgba(30, 30, 30, 0.95);
+    border-radius: 15px 15px 0 0;
+}
+
+.modal-header h2 {
+    color: #17b5b5;
+    margin: 0;
+    font-size: 1.8rem;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: #b0b0b0;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 0;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.close-button:hover {
+    background: rgba(244, 67, 54, 0.1);
+    color: #f44336;
+}
+
+.modal-body {
+    flex: 1;
+    padding: 2rem;
+    overflow-y: auto;
+    background: #121212;
+    border-radius: 0 0 15px 15px;
+}
+
+.modal-list {
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.modal-personality {
+    background: rgba(30, 30, 30, 0.9);
+    padding: 1.5rem 2rem;
+    font-size: 1.1rem;
+}
+
+.modal-chat-container {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 /* Section Navigation */
@@ -1270,6 +1507,36 @@ h5 {
 
     .content-page {
         padding: 20px 10px;
+    }
+
+    .section-header-with-actions {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+    }
+
+    .section-header-with-actions h2 {
+        margin-bottom: 0;
+    }
+
+    .modal-content {
+        width: 100vw;
+        height: 100vh;
+        border-radius: 0;
+    }
+
+    .modal-header {
+        border-radius: 0;
+    }
+
+    .modal-body {
+        padding: 1rem;
+        border-radius: 0;
+    }
+
+    .modal-list {
+        grid-template-columns: 1fr;
+        gap: 1rem;
     }
 }
 </style>
