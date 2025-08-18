@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
     container_name: cbse-app
-    restart: unless-stopped
+    restart: always
     ports:
       - "5100:80"
     networks:
