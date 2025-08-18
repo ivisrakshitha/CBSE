@@ -1,0 +1,284 @@
+{
+  "chapterMetadata": {
+    "title": "Metals and Non-metals",
+    "subject": "Science",
+    "discipline": "Chemistry",
+    "grade": 10,
+    "learningObjectives": [
+      "Classify elements as metals and non-metals",
+      "Understand physical and chemical properties of metals and non-metals",
+      "Learn about metal reactivity and extraction",
+      "Explore chemical reactions of metals",
+      "Understand the concept of reactivity series",
+      "Learn methods of metal extraction and refining"
+    ],
+    "prerequisites": [
+      "Basic understanding of elements from Class IX",
+      "Fundamental knowledge of chemical reactions",
+      "Basic concepts of atomic structure"
+    ],
+    "ncertComputationalThinking": {
+      "problemSolvingApproach": "Systematic investigation of metal properties and reactions",
+      "indigenousTechContext": [
+        "Ancient Indian metallurgy techniques",
+        "Traditional metal processing methods"
+      ]
+    }
+  },
+  "sections": [
+    {
+      "title": "Physical Properties of Metals and Non-metals",
+      "summary": "Detailed exploration of physical characteristics distinguishing metals and non-metals",
+      "keyConcepts": [
+        {
+          "name": "Metallic Lustre",
+          "description": "Metals have a shining surface when pure",
+          "level": "Physical",
+          "properties": ["Reflective surface", "Characteristic shine"]
+        },
+        {
+          "name": "Malleability",
+          "description": "Ability of metals to be beaten into thin sheets",
+          "level": "Physical",
+          "examples": ["Gold can be beaten into extremely thin sheets"]
+        },
+        {
+          "name": "Ductility",
+          "description": "Ability of metals to be drawn into thin wires",
+          "level": "Physical",
+          "examples": ["A wire of 2 km length can be drawn from one gram of gold"]
+        },
+        {
+          "name": "Conductivity",
+          "description": "Metals are good conductors of heat and electricity",
+          "level": "Physical",
+          "details": ["Silver and copper are best heat conductors"]
+        }
+      ],
+      "activities": [
+        {
+          "title": "Metal Properties Investigation",
+          "description": "Conduct experiments to test metallic properties like lustre, malleability, and ductility",
+          "type": "Hands-on investigation",
+          "materials": [
+            "Samples of different metals",
+            "Hammer",
+            "Wire drawing equipment",
+            "Heat source"
+          ]
+        }
+      ],
+      "examples": [
+        {
+          "content": "Gold and silver are the most malleable metals",
+          "context": "Demonstrating extreme malleability"
+        }
+      ],
+      "exercises": [
+        {
+          "type": "Observation",
+          "question": "Compare the properties of different metal samples",
+          "difficulty": "Basic",
+          "skillTargeted": "Scientific observation and comparison"
+        }
+      ]
+    },
+    {
+      "title": "Chemical Properties of Metals",
+      "summary": "Comprehensive investigation of metal reactions with various substances",
+      "keyConcepts": [
+        {
+          "name": "Metal Oxides",
+          "description": "Metals combine with oxygen to form basic oxides",
+          "level": "Chemical",
+          "variations": [
+            "Most metals form basic oxides",
+            "Some metals like aluminium form amphoteric oxides"
+          ]
+        },
+        {
+          "name": "Reactivity Series",
+          "description": "Metals arranged in order of decreasing reactivity",
+          "level": "Chemical",
+          "details": [
+            "Helps predict metal behavior in chemical reactions",
+            "Ranges from most reactive (potassium) to least reactive (gold)"
+          ]
+        }
+      ],
+      "activities": [
+        {
+          "title": "Reaction of Metals with Oxygen",
+          "description": "Observe how different metals react when burned in air",
+          "type": "Experimental demonstration",
+          "safetyNotes": ["Requires teacher supervision", "Use protective equipment"]
+        },
+        {
+          "title": "Metals and Water Reaction",
+          "description": "Investigate how metals react with cold and hot water",
+          "type": "Experimental investigation",
+          "variableStudy": [
+            "Reaction with cold water",
+            "Reaction with hot water",
+            "Reaction with steam"
+          ]
+        }
+      ],
+      "scientificPrinciples": [
+        {
+          "principle": "Electron transfer in chemical reactions",
+          "application": "Understanding metal reactivity"
+        }
+      ]
+    },
+    {
+      "title": "Extraction of Metals",
+      "summary": "Comprehensive study of metal extraction techniques based on reactivity",
+      "keyConcepts": [
+        {
+          "name": "Metallurgy",
+          "description": "Process of extracting metals from their ores",
+          "level": "Industrial",
+          "stages": [
+            "Ore concentration",
+            "Conversion to metal oxide",
+            "Reduction",
+            "Refining"
+          ]
+        },
+        {
+          "name": "Enrichment of Ores",
+          "description": "Removing impurities from metal ores before extraction",
+          "level": "Technical",
+          "methods": [
+            "Physical separation",
+            "Chemical treatment"
+          ]
+        }
+      ],
+      "methodologies": [
+        {
+          "technique": "Extraction of Low Reactivity Metals",
+          "description": "Heating of metal oxides",
+          "examples": ["Mercury extraction from cinnabar"]
+        },
+        {
+          "technique": "Extraction of Medium Reactivity Metals",
+          "description": "Roasting and reduction",
+          "examples": ["Zinc extraction", "Iron extraction"]
+        },
+        {
+          "technique": "Extraction of Highly Reactive Metals",
+          "description": "Electrolytic reduction",
+          "examples": ["Sodium", "Magnesium", "Aluminium"]
+        }
+      ],
+      "examples": [
+        {
+          "content": "Metals at the bottom of the activity series are found in free state",
+          "context": "Natural occurrence of metals"
+        }
+      ]
+    }
+  ],
+  "teachingResources": {
+    "keyVocabulary": [
+      {
+        "term": "Metallurgy",
+        "definition": "The process of extracting metals from their ores",
+        "context": "Industrial and chemical processing"
+      },
+      {
+        "term": "Reactivity Series",
+        "definition": "List of metals arranged in order of their decreasing reactivity",
+        "usage": "Predicting chemical behavior of metals"
+      },
+      {
+        "term": "Amphoteric Oxide",
+        "definition": "Metal oxide that can react with both acids and bases",
+        "examples": ["Aluminium oxide", "Zinc oxide"]
+      }
+    ],
+    "commonMisconceptions": [
+      {
+        "misconception": "All metals have the same properties",
+        "correction": "Metals have varying properties based on their reactivity and composition"
+      },
+      {
+        "misconception": "Metals always conduct electricity equally",
+        "correction": "Electrical conductivity varies between different metals"
+      }
+    ],
+    "assessmentIdeas": [
+      {
+        "questionType": "Practical Demonstration",
+        "description": "Identify metals through their characteristic reactions",
+        "skills": ["Observation", "Chemical analysis"]
+      },
+      {
+        "questionType": "Problem Solving",
+        "description": "Predict metal reactions based on reactivity series",
+        "skills": ["Chemical reasoning", "Predictive analysis"]
+      }
+    ]
+  },
+  "practicalApplications": [
+    {
+      "context": "Metal Extraction and Refining",
+      "description": "Industrial processes for obtaining pure metals",
+      "techniques": [
+        "Electrolytic refining",
+        "Displacement reactions",
+        "Thermit process"
+      ]
+    },
+    {
+      "context": "Alloy Production",
+      "description": "Creating materials with improved properties by mixing metals",
+      "examples": [
+        "Stainless steel",
+        "Bronze",
+        "Brass"
+      ]
+    }
+  ],
+  "ethicalConsiderations": [
+    {
+      "issue": "Environmental Impact of Metal Extraction",
+      "discussion": "Sustainable mining and processing practices",
+      "keyPoints": [
+        "Minimizing ecological disruption",
+        "Reducing chemical waste",
+        "Recycling metals"
+      ]
+    }
+  ],
+  "crossCurricularConnections": [
+    {
+      "subject": "Physics",
+      "topic": "Electrical Conductivity",
+      "integration": "Understanding how metal properties relate to electrical conduction"
+    },
+    {
+      "subject": "Industrial Technology",
+      "topic": "Metal Processing",
+      "integration": "Exploring industrial applications of metallurgy"
+    },
+    {
+      "subject": "History",
+      "topic": "Technological Development",
+      "integration": "Role of metallurgy in human civilization"
+    }
+  ],
+  "digitalLiteracy": {
+    "onlineResources": [
+      "Interactive periodic table",
+      "Metal reactivity simulation tools",
+      "Virtual chemistry laboratory"
+    ],
+    "mediaProduction": [
+      "Create digital presentations on metal properties",
+      "Design infographics about metal extraction"
+    ]
+  }
+}
