@@ -218,7 +218,7 @@ Question: ${question}
           })
         }
       );
-
+ 
       const data = await response.json();
 
       if (data?.choices?.length > 0) {
