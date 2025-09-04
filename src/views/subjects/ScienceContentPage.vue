@@ -285,10 +285,81 @@
                 <div v-show="activeSection === 'activities'" class="content-section">
                     <h2>Laboratory Activities & Experiments</h2>
                     <div class="activities-container">
-                        <div v-for="(section, index) in chapterData.sections" :key="'activity-' + index">
+                        <!-- Display dedicated laboratory activities if they exist -->
+                        <div v-if="chapterData.laboratoryActivities && chapterData.laboratoryActivities.length > 0"
+                            class="content-block dedicated-activities">
+                            <h3>Hands-on Laboratory Experiments</h3>
+                            <div v-for="(activity, aIndex) in chapterData.laboratoryActivities" :key="'lab-' + aIndex"
+                                class="activity-item">
+                                <h4>Activity {{ aIndex + 1 }}: {{ activity.title || activity.name }}</h4>
+
+                                <div v-if="activity.objective" class="activity-objective">
+                                    <h5>Objective:</h5>
+                                    <TypewriterText :text="activity.objective"></TypewriterText>
+                                </div>
+
+                                <div v-if="activity.materials && activity.materials.length > 0"
+                                    class="activity-materials">
+                                    <h5>Materials Required:</h5>
+                                    <ul>
+                                        <li v-for="(material, mIndex) in activity.materials" :key="mIndex">
+                                            {{ material }}
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div v-if="activity.procedure && activity.procedure.length > 0"
+                                    class="activity-procedure">
+                                    <h5>Procedure:</h5>
+                                    <ol>
+                                        <li v-for="(step, sIndex) in activity.procedure" :key="sIndex">
+                                            <TypewriterText :text="step"></TypewriterText>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <div v-if="activity.observation" class="activity-observation">
+                                    <h5>Observation:</h5>
+                                    <TypewriterText :text="activity.observation"></TypewriterText>
+                                </div>
+
+                                <div v-if="activity.result" class="activity-result">
+                                    <h5>Result:</h5>
+                                    <TypewriterText :text="activity.result"></TypewriterText>
+                                </div>
+
+                                <div v-if="activity.conclusion" class="activity-conclusion">
+                                    <h5>Conclusion:</h5>
+                                    <TypewriterText :text="activity.conclusion"></TypewriterText>
+                                </div>
+
+                                <div v-if="activity.safetyPrecautions && activity.safetyPrecautions.length > 0"
+                                    class="safety-precautions">
+                                    <h5>Safety Precautions:</h5>
+                                    <ul>
+                                        <li v-for="(precaution, pIndex) in activity.safetyPrecautions" :key="pIndex">
+                                            {{ precaution }}
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div v-if="activity.questions && activity.questions.length > 0"
+                                    class="activity-questions">
+                                    <h5>Questions for Analysis:</h5>
+                                    <ol>
+                                        <li v-for="(question, qIndex) in activity.questions" :key="qIndex">
+                                            {{ question }}
+                                        </li>
+                                    </ol>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Display section-based visual elements/activities -->
+                        <div v-for="(section, index) in chapterData.sections" :key="'activity-section-' + index">
                             <div v-if="section.visualElements && section.visualElements.length > 0"
-                                class="content-block">
-                                <h3>{{ section.title }} - Activities</h3>
+                                class="content-block section-activities">
+                                <h3>{{ section.title }} - Demonstrations & Activities</h3>
                                 <div v-for="(element, vIndex) in section.visualElements" :key="vIndex"
                                     class="activity-item">
                                     <h4>{{ element.type }}</h4>
@@ -299,12 +370,95 @@
                                         <h5>Instructions:</h5>
                                         <TypewriterText :text="element.interactivityHint"></TypewriterText>
                                     </div>
+                                    <div v-if="element.materials" class="activity-materials">
+                                        <h5>Materials:</h5>
+                                        <TypewriterText :text="element.materials"></TypewriterText>
+                                    </div>
+                                    <div v-if="element.procedure" class="activity-procedure">
+                                        <h5>Procedure:</h5>
+                                        <TypewriterText :text="element.procedure"></TypewriterText>
+                                    </div>
+                                    <div v-if="element.expectedOutcome" class="expected-outcome">
+                                        <h5>Expected Outcome:</h5>
+                                        <TypewriterText :text="element.expectedOutcome"></TypewriterText>
+                                    </div>
                                 </div>
                             </div>
                         </div>
+
+                        <!-- Display experiments if they exist as a separate section -->
+                        <div v-if="chapterData.experiments && chapterData.experiments.length > 0"
+                            class="content-block experiments-section">
+                            <h3>Scientific Experiments</h3>
+                            <div v-for="(experiment, eIndex) in chapterData.experiments" :key="'exp-' + eIndex"
+                                class="activity-item experiment-item">
+                                <h4>Experiment {{ eIndex + 1 }}: {{ experiment.title || experiment.name }}</h4>
+
+                                <div v-if="experiment.hypothesis" class="experiment-hypothesis">
+                                    <h5>Hypothesis:</h5>
+                                    <TypewriterText :text="experiment.hypothesis"></TypewriterText>
+                                </div>
+
+                                <div v-if="experiment.variables" class="experiment-variables">
+                                    <h5>Variables:</h5>
+                                    <div v-if="experiment.variables.independent" class="variable-item">
+                                        <strong>Independent Variable:</strong> {{ experiment.variables.independent }}
+                                    </div>
+                                    <div v-if="experiment.variables.dependent" class="variable-item">
+                                        <strong>Dependent Variable:</strong> {{ experiment.variables.dependent }}
+                                    </div>
+                                    <div v-if="experiment.variables.controlled" class="variable-item">
+                                        <strong>Controlled Variables:</strong> {{ experiment.variables.controlled }}
+                                    </div>
+                                </div>
+
+                                <!-- Include all the same fields as laboratory activities -->
+                                <div v-if="experiment.materials && experiment.materials.length > 0"
+                                    class="activity-materials">
+                                    <h5>Materials Required:</h5>
+                                    <ul>
+                                        <li v-for="(material, mIndex) in experiment.materials" :key="mIndex">
+                                            {{ material }}
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div v-if="experiment.procedure && experiment.procedure.length > 0"
+                                    class="activity-procedure">
+                                    <h5>Procedure:</h5>
+                                    <ol>
+                                        <li v-for="(step, sIndex) in experiment.procedure" :key="sIndex">
+                                            <TypewriterText :text="step"></TypewriterText>
+                                        </li>
+                                    </ol>
+                                </div>
+
+                                <div v-if="experiment.dataCollection" class="data-collection">
+                                    <h5>Data Collection:</h5>
+                                    <TypewriterText :text="experiment.dataCollection"></TypewriterText>
+                                </div>
+
+                                <div v-if="experiment.analysis" class="experiment-analysis">
+                                    <h5>Analysis:</h5>
+                                    <TypewriterText :text="experiment.analysis"></TypewriterText>
+                                </div>
+
+                                <div v-if="experiment.conclusion" class="activity-conclusion">
+                                    <h5>Conclusion:</h5>
+                                    <TypewriterText :text="experiment.conclusion"></TypewriterText>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Fallback message if no activities are found -->
+                        <div v-if="!hasAnyActivities" class="content-block no-activities">
+                            <h3>No Laboratory Activities Found</h3>
+                            <p>Laboratory activities for this chapter are not currently available in the data structure.
+                                Please check the JSON file structure or add activities under 'laboratoryActivities',
+                                'experiments', or 'visualElements' in the section data.</p>
+                        </div>
                     </div>
                 </div>
-
                 <!-- Teaching Resources Section -->
                 <div v-show="activeSection === 'resources'" class="content-section">
                     <h2>Teaching Resources</h2>
@@ -569,7 +723,17 @@ export default {
         },
         chapterId() {
             return this.$route.params.chapterId || '';
+        },
+        hasAnyActivities() {
+            const hasLabActivities = this.chapterData.laboratoryActivities && this.chapterData.laboratoryActivities.length > 0;
+            const hasExperiments = this.chapterData.experiments && this.chapterData.experiments.length > 0;
+            const hasVisualElements = this.chapterData.sections && this.chapterData.sections.some(section =>
+                section.visualElements && section.visualElements.length > 0
+            );
+
+            return hasLabActivities || hasExperiments || hasVisualElements;
         }
+
     },
     mounted() {
         this.fetchChapterData();
@@ -858,6 +1022,7 @@ header h1 {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -881,6 +1046,7 @@ header h1 {
         transform: translateY(-50px);
         opacity: 0;
     }
+
     to {
         transform: translateY(0);
         opacity: 1;

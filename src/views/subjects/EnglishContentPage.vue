@@ -93,11 +93,8 @@
                 <div class="sidebar-section">
                     <h4>Main Topics</h4>
                     <nav class="topics-nav">
-                        <button 
-                            v-for="(section, index) in chapterData.sections" 
-                            :key="'topic-' + index"
-                            @click="scrollToSection(index)" 
-                            :class="{ active: activeTopicIndex === index }"
+                        <button v-for="(section, index) in chapterData.sections" :key="'topic-' + index"
+                            @click="scrollToSection(index)" :class="{ active: activeTopicIndex === index }"
                             class="topic-item">
                             {{ section.title }}
                         </button>
@@ -129,8 +126,10 @@
                     </div>
                     <div v-if="chapterData.chapterMetadata.ncertLanguageApproach" class="language-approach">
                         <h5>NCERT Language Approach</h5>
-                        <div v-if="chapterData.chapterMetadata.ncertLanguageApproach.culturalLiteracy" class="cultural-literacy">
-                            <p><strong>Cultural Context:</strong> {{ chapterData.chapterMetadata.ncertLanguageApproach.culturalLiteracy }}</p>
+                        <div v-if="chapterData.chapterMetadata.ncertLanguageApproach.culturalLiteracy"
+                            class="cultural-literacy">
+                            <p><strong>Cultural Context:</strong> {{
+                                chapterData.chapterMetadata.ncertLanguageApproach.culturalLiteracy }}</p>
                         </div>
                     </div>
                 </div>
@@ -141,7 +140,7 @@
                 <!-- Chapter Overview Section -->
                 <div v-show="activeSection === 'overview'" class="content-section">
                     <h2>Chapter Overview</h2>
-                    
+
                     <!-- Section Content -->
                     <div v-for="(section, index) in chapterData.sections" :key="'section-' + index"
                         :ref="'section-' + index" class="section-content">
@@ -214,7 +213,8 @@
                             <div class="activities-container">
                                 <div v-for="(activity, aIndex) in section.activities" :key="aIndex"
                                     class="activity-item">
-                                    <h4>{{ activity.title }} <span class="activity-type">({{ activity.type }})</span></h4>
+                                    <h4>{{ activity.title }} <span class="activity-type">({{ activity.type }})</span>
+                                    </h4>
                                     <div class="activity-description">
                                         <TypewriterText :text="activity.description"></TypewriterText>
                                     </div>
@@ -223,8 +223,7 @@
                         </div>
 
                         <!-- Exercises -->
-                        <div v-if="section.exercises && section.exercises.length > 0"
-                            class="content-block exercises">
+                        <div v-if="section.exercises && section.exercises.length > 0" class="content-block exercises">
                             <h3>Exercises</h3>
                             <div class="exercises-container">
                                 <div v-for="(exercise, exIndex) in section.exercises" :key="exIndex"
@@ -232,7 +231,8 @@
                                     <div class="exercise-header">
                                         <h4>{{ exercise.type }}</h4>
                                         <div class="exercise-meta">
-                                            <span class="difficulty-badge" :class="'difficulty-' + exercise.difficulty.toLowerCase()">
+                                            <span class="difficulty-badge"
+                                                :class="'difficulty-' + exercise.difficulty.toLowerCase()">
                                                 {{ exercise.difficulty }}
                                             </span>
                                             <span class="skill-badge">{{ exercise.skillTargeted }}</span>
@@ -259,7 +259,8 @@
                                 <div v-if="section.oralLanguageActivity.preparation" class="preparation-steps">
                                     <h5>Preparation Steps:</h5>
                                     <ul>
-                                        <li v-for="(step, sIndex) in section.oralLanguageActivity.preparation" :key="sIndex">
+                                        <li v-for="(step, sIndex) in section.oralLanguageActivity.preparation"
+                                            :key="sIndex">
                                             {{ step }}
                                         </li>
                                     </ul>
@@ -267,7 +268,8 @@
                                 <div v-if="section.oralLanguageActivity.listeningPrompts" class="listening-prompts">
                                     <h5>Listening Focus Points:</h5>
                                     <ul>
-                                        <li v-for="(prompt, lIndex) in section.oralLanguageActivity.listeningPrompts" :key="lIndex">
+                                        <li v-for="(prompt, lIndex) in section.oralLanguageActivity.listeningPrompts"
+                                            :key="lIndex">
                                             {{ prompt }}
                                         </li>
                                     </ul>
@@ -285,7 +287,8 @@
                                 <div v-if="section.creativityCorner.guidelines" class="creativity-guidelines">
                                     <h5>Guidelines:</h5>
                                     <ul>
-                                        <li v-for="(guideline, gIndex) in section.creativityCorner.guidelines" :key="gIndex">
+                                        <li v-for="(guideline, gIndex) in section.creativityCorner.guidelines"
+                                            :key="gIndex">
                                             {{ guideline }}
                                         </li>
                                     </ul>
@@ -293,7 +296,8 @@
                                 <div v-if="section.creativityCorner.exemplars" class="creativity-exemplars">
                                     <h5>Example Approaches:</h5>
                                     <ul>
-                                        <li v-for="(exemplar, eIndex) in section.creativityCorner.exemplars" :key="eIndex">
+                                        <li v-for="(exemplar, eIndex) in section.creativityCorner.exemplars"
+                                            :key="eIndex">
                                             {{ exemplar }}
                                         </li>
                                     </ul>
@@ -308,7 +312,8 @@
                                 <div v-if="section.multilingualConnections.translations" class="translations">
                                     <h5>Key Terms in Multiple Languages:</h5>
                                     <ul>
-                                        <li v-for="(translation, tIndex) in section.multilingualConnections.translations" :key="tIndex">
+                                        <li v-for="(translation, tIndex) in section.multilingualConnections.translations"
+                                            :key="tIndex">
                                             {{ translation }}
                                         </li>
                                     </ul>
@@ -316,7 +321,8 @@
                                 <div v-if="section.multilingualConnections.etymologyNotes" class="etymology">
                                     <h5>Etymology Notes:</h5>
                                     <ul>
-                                        <li v-for="(note, nIndex) in section.multilingualConnections.etymologyNotes" :key="nIndex">
+                                        <li v-for="(note, nIndex) in section.multilingualConnections.etymologyNotes"
+                                            :key="nIndex">
                                             {{ note }}
                                         </li>
                                     </ul>
@@ -334,22 +340,31 @@
                 <div v-show="activeSection === 'resources'" class="content-section">
                     <h2>Teaching Resources</h2>
                     <div v-if="chapterData.teachingResources">
-                        <!-- Key Vocabulary -->
+                        <!-- Key Vocabulary - MODIFIED SECTION -->
                         <div v-if="chapterData.teachingResources.keyVocabulary && chapterData.teachingResources.keyVocabulary.length > 0"
                             class="content-block key-vocabulary">
                             <h3>Key Vocabulary</h3>
                             <div class="vocabulary-container">
                                 <div v-for="(term, vIndex) in chapterData.teachingResources.keyVocabulary" :key="vIndex"
                                     class="vocabulary-item">
-                                    <h4>{{ term.term }}</h4>
-                                    <div class="vocabulary-definition">
-                                        <TypewriterText :text="term.definition"></TypewriterText>
+                                    <div class="vocabulary-term-header" @click="toggleVocabulary(vIndex)"
+                                        :class="{ 'expanded': expandedVocabulary[vIndex] }">
+                                        <h4>{{ term.term }}</h4>
+                                        <span class="vocabulary-toggle-icon">
+                                            {{ expandedVocabulary[vIndex] ? '▼' : '▶' }}
+                                        </span>
                                     </div>
-                                    <div v-if="term.etymology" class="vocabulary-etymology">
-                                        <strong>Etymology:</strong> {{ term.etymology }}
-                                    </div>
-                                    <div v-if="term.usage" class="vocabulary-usage">
-                                        <strong>Usage:</strong> <em>{{ term.usage }}</em>
+
+                                    <div v-show="expandedVocabulary[vIndex]" class="vocabulary-details">
+                                        <div class="vocabulary-definition">
+                                            <TypewriterText :text="term.definition"></TypewriterText>
+                                        </div>
+                                        <div v-if="term.etymology" class="vocabulary-etymology">
+                                            <strong>Etymology:</strong> {{ term.etymology }}
+                                        </div>
+                                        <div v-if="term.usage" class="vocabulary-usage">
+                                            <strong>Usage:</strong> <em>{{ term.usage }}</em>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -360,17 +375,32 @@
                             class="content-block literary-devices">
                             <h3>Literary Devices</h3>
                             <div class="devices-container">
-                                <div v-for="(device, dIndex) in chapterData.teachingResources.literaryDevices" :key="dIndex"
-                                    class="device-item">
-                                    <h4>{{ device.device }}</h4>
-                                    <div class="device-definition">
-                                        <TypewriterText :text="device.definition"></TypewriterText>
+                                <div v-for="(device, dIndex) in chapterData.teachingResources.literaryDevices"
+                                    :key="dIndex" class="device-item">
+                                    <div class="device-term-header" @click="toggleLiteraryDevice(dIndex)"
+                                        :class="{ 'expanded': expandedLiteraryDevices[dIndex] }">
+                                        <h4>{{ device.device }}</h4>
+                                        <span class="device-toggle-icon">
+                                            {{ expandedLiteraryDevices[dIndex] ? '▼' : '▶' }}
+                                        </span>
                                     </div>
-                                    <div v-if="device.effect" class="device-effect">
-                                        <strong>Effect:</strong> {{ device.effect }}
-                                    </div>
-                                    <div v-if="device.example" class="device-example">
-                                        <strong>Example:</strong> <em>{{ device.example }}</em>
+
+                                    <div v-show="expandedLiteraryDevices[dIndex]" class="device-details">
+                                        <div class="device-definition">
+                                            <TypewriterText :text="device.definition"></TypewriterText>
+                                        </div>
+                                        <div v-if="device.effect" class="device-effect">
+                                            <strong>Effect:</strong> {{ device.effect }}
+                                        </div>
+                                        <div v-if="device.example" class="device-example">
+                                            <strong>Example:</strong> <em>{{ device.example }}</em>
+                                        </div>
+                                        <div v-if="device.etymology" class="device-etymology">
+                                            <strong>Etymology:</strong> {{ device.etymology }}
+                                        </div>
+                                        <div v-if="device.usage" class="device-usage">
+                                            <strong>Usage:</strong> <em>{{ device.usage }}</em>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -383,25 +413,30 @@
                             <div class="misconceptions-container">
                                 <div v-for="(misconception, mIndex) in chapterData.teachingResources.commonMisconceptions"
                                     :key="mIndex" class="misconception-item">
-                                    <div class="misconception-content">
-                                        <h4 class="misconception-title">Misconception:</h4>
-                                        <TypewriterText :text="misconception.misconception"></TypewriterText>
+                                    <div class="misconception-term-header" @click="toggleMisconception(mIndex)"
+                                        :class="{ 'expanded': expandedMisconceptions[mIndex] }">
+                                        <h4>{{ misconception.misconception }}</h4>
+                                        <span class="misconception-toggle-icon">
+                                            {{ expandedMisconceptions[mIndex] ? '▼' : '▶' }}
+                                        </span>
                                     </div>
-                                    <div class="correction-content">
-                                        <h4 class="correction-title">Correction:</h4>
-                                        <TypewriterText :text="misconception.correction"></TypewriterText>
+
+                                    <div v-show="expandedMisconceptions[mIndex]" class="misconception-details">
+                                        <div class="correction-content">
+                                            <h4 class="correction-title">Correction:</h4>
+                                            <TypewriterText :text="misconception.correction"></TypewriterText>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
                         <!-- Assessment Ideas -->
                         <div v-if="chapterData.teachingResources.assessmentIdeas && chapterData.teachingResources.assessmentIdeas.length > 0"
                             class="content-block assessment-ideas">
                             <h3>Assessment Ideas</h3>
                             <div class="assessments-container">
-                                <div v-for="(assessment, aIndex) in chapterData.teachingResources.assessmentIdeas" :key="aIndex"
-                                    class="assessment-item">
+                                <div v-for="(assessment, aIndex) in chapterData.teachingResources.assessmentIdeas"
+                                    :key="aIndex" class="assessment-item">
                                     <h4>{{ assessment.questionType }}</h4>
                                     <div class="assessment-question">
                                         <strong>Question:</strong> {{ assessment.question }}
@@ -409,7 +444,8 @@
                                     <div v-if="assessment.answer" class="assessment-answer">
                                         <strong>Expected Answer:</strong> {{ assessment.answer }}
                                     </div>
-                                    <div v-if="assessment.rubric && assessment.rubric.length > 0" class="assessment-rubric">
+                                    <div v-if="assessment.rubric && assessment.rubric.length > 0"
+                                        class="assessment-rubric">
                                         <h5>Evaluation Criteria:</h5>
                                         <ul>
                                             <li v-for="(criterion, cIndex) in assessment.rubric" :key="cIndex">
@@ -422,21 +458,26 @@
                         </div>
 
                         <!-- Differentiation Tips -->
-                        <div v-if="chapterData.teachingResources.differentiationTips" class="content-block differentiation">
+                        <div v-if="chapterData.teachingResources.differentiationTips"
+                            class="content-block differentiation">
                             <h3>Differentiation Strategies</h3>
                             <div class="differentiation-content">
-                                <div v-if="chapterData.teachingResources.differentiationTips.support" class="support-strategies">
+                                <div v-if="chapterData.teachingResources.differentiationTips.support"
+                                    class="support-strategies">
                                     <h4>Support Strategies</h4>
                                     <ul>
-                                        <li v-for="(strategy, sIndex) in chapterData.teachingResources.differentiationTips.support" :key="sIndex">
+                                        <li v-for="(strategy, sIndex) in chapterData.teachingResources.differentiationTips.support"
+                                            :key="sIndex">
                                             {{ strategy }}
                                         </li>
                                     </ul>
                                 </div>
-                                <div v-if="chapterData.teachingResources.differentiationTips.extension" class="extension-strategies">
+                                <div v-if="chapterData.teachingResources.differentiationTips.extension"
+                                    class="extension-strategies">
                                     <h4>Extension Activities</h4>
                                     <ul>
-                                        <li v-for="(activity, eIndex) in chapterData.teachingResources.differentiationTips.extension" :key="eIndex">
+                                        <li v-for="(activity, eIndex) in chapterData.teachingResources.differentiationTips.extension"
+                                            :key="eIndex">
                                             {{ activity }}
                                         </li>
                                     </ul>
@@ -479,26 +520,44 @@
                                     <div class="text-connection">
                                         <strong>Connection to Chapter:</strong> {{ text.connection }}
                                     </div>
+
+                                    <!-- Images Section -->
+                                    <div v-if="text.images && text.images.length > 0" class="text-images">
+                                        <h5>Visual References</h5>
+                                        <div class="images-grid">
+                                            <div v-for="(image, iIndex) in text.images" :key="iIndex"
+                                                class="image-item">
+                                                <img :src="image.url" :alt="image.category" class="cultural-image"
+                                                    loading="lazy">
+                                                <div class="image-caption">{{ image.category }}</div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
 
                         <!-- Indian Traditions -->
-                        <div v-if="chapterData.culturalContext.indianTraditions" class="content-block indian-traditions">
+                        <div v-if="chapterData.culturalContext.indianTraditions"
+                            class="content-block indian-traditions">
                             <h3>Indian Literary Traditions</h3>
                             <div class="traditions-content">
-                                <div v-if="chapterData.culturalContext.indianTraditions.literaryForms" class="literary-forms">
+                                <div v-if="chapterData.culturalContext.indianTraditions.literaryForms"
+                                    class="literary-forms">
                                     <h4>Traditional Literary Forms</h4>
                                     <ul>
-                                        <li v-for="(form, fIndex) in chapterData.culturalContext.indianTraditions.literaryForms" :key="fIndex">
+                                        <li v-for="(form, fIndex) in chapterData.culturalContext.indianTraditions.literaryForms"
+                                            :key="fIndex">
                                             {{ form }}
                                         </li>
                                     </ul>
                                 </div>
-                                <div v-if="chapterData.culturalContext.indianTraditions.culturalReferences" class="cultural-references">
+                                <div v-if="chapterData.culturalContext.indianTraditions.culturalReferences"
+                                    class="cultural-references">
                                     <h4>Cultural References</h4>
                                     <ul>
-                                        <li v-for="(reference, rIndex) in chapterData.culturalContext.indianTraditions.culturalReferences" :key="rIndex">
+                                        <li v-for="(reference, rIndex) in chapterData.culturalContext.indianTraditions.culturalReferences"
+                                            :key="rIndex">
                                             {{ reference }}
                                         </li>
                                     </ul>
@@ -507,66 +566,195 @@
                         </div>
 
                         <!-- Representation Considerations -->
-                        <div v-if="chapterData.culturalContext.representationConsiderations" class="content-block representation">
+                        <div v-if="chapterData.culturalContext.representationConsiderations"
+                            class="content-block representation">
                             <h3>Inclusive Teaching Notes</h3>
                             <div class="representation-content">
-                                <TypewriterText :text="chapterData.culturalContext.representationConsiderations"></TypewriterText>
+                                <TypewriterText :text="chapterData.culturalContext.representationConsiderations">
+                                </TypewriterText>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Communication Skills Section -->
+                <!-- Updated Communication Skills Section -->
                 <div v-show="activeSection === 'skills'" class="content-section">
                     <h2>Communication Skills Development</h2>
                     <div v-if="chapterData.communicationSkills" class="skills-container">
                         <!-- Writing Skills -->
                         <div v-if="chapterData.communicationSkills.writing && chapterData.communicationSkills.writing.length > 0"
                             class="content-block writing-skills">
-                            <h3>Writing Skills</h3>
-                            <ul>
-                                <li v-for="(skill, wIndex) in chapterData.communicationSkills.writing" :key="wIndex">
-                                    {{ skill }}
-                                </li>
-                            </ul>
+                            <div class="skill-header" @click="toggleSkillSection('writing')"
+                                :class="{ 'expanded': expandedSkills.writing }">
+                                <h3>Writing Skills</h3>
+                                <span class="skill-toggle-icon">
+                                    {{ expandedSkills.writing ? '▼' : '▶' }}
+                                </span>
+                            </div>
+
+                            <div v-show="expandedSkills.writing" class="skill-content">
+                                <div v-for="(skill, wIndex) in chapterData.communicationSkills.writing" :key="wIndex"
+                                    class="skill-item">
+                                    <h4>{{ skill.topic }}</h4>
+
+                                    <!-- Examples for Writing Skills -->
+                                    <div v-if="skill.examples" class="skill-examples">
+                                        <!-- Formal Letter Example -->
+                                        <div v-if="skill.examples.formalLetter" class="example-item formal-example">
+                                            <h5>{{ skill.examples.formalLetter.title }}</h5>
+                                            <div class="example-content">
+                                                <pre
+                                                    class="letter-format">{{ skill.examples.formalLetter.content }}</pre>
+                                            </div>
+                                        </div>
+
+                                        <!-- Informal Letter Example -->
+                                        <div v-if="skill.examples.informalLetter" class="example-item informal-example">
+                                            <h5>{{ skill.examples.informalLetter.title }}</h5>
+                                            <div class="example-content">
+                                                <pre
+                                                    class="letter-format">{{ skill.examples.informalLetter.content }}</pre>
+                                            </div>
+                                        </div>
+
+                                        <!-- Short Paragraph Example -->
+                                        <div v-if="skill.examples.shortParagraph"
+                                            class="example-item paragraph-example">
+                                            <h5>Descriptive Writing Sample</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.shortParagraph"></TypewriterText>
+                                            </div>
+                                        </div>
+
+                                        <!-- Metaphor Use Example -->
+                                        <div v-if="skill.examples.metaphorUse" class="example-item metaphor-example">
+                                            <h5>Using Metaphors</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.metaphorUse"></TypewriterText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Speaking Skills -->
                         <div v-if="chapterData.communicationSkills.speaking && chapterData.communicationSkills.speaking.length > 0"
                             class="content-block speaking-skills">
-                            <h3>Speaking Skills</h3>
-                            <ul>
-                                <li v-for="(skill, sIndex) in chapterData.communicationSkills.speaking" :key="sIndex">
-                                    {{ skill }}
-                                </li>
-                            </ul>
+                            <div class="skill-header" @click="toggleSkillSection('speaking')"
+                                :class="{ 'expanded': expandedSkills.speaking }">
+                                <h3>Speaking Skills</h3>
+                                <span class="skill-toggle-icon">
+                                    {{ expandedSkills.speaking ? '▼' : '▶' }}
+                                </span>
+                            </div>
+
+                            <div v-show="expandedSkills.speaking" class="skill-content">
+                                <div v-for="(skill, sIndex) in chapterData.communicationSkills.speaking" :key="sIndex"
+                                    class="skill-item">
+                                    <h4>{{ skill.topic }}</h4>
+
+                                    <!-- Examples for Speaking Skills -->
+                                    <div v-if="skill.examples" class="skill-examples">
+                                        <div v-if="skill.examples.activity" class="example-item activity-example">
+                                            <h5>Activity</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.activity"></TypewriterText>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="skill.examples.sampleLine" class="example-item sample-example">
+                                            <h5>Sample Practice</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.sampleLine"></TypewriterText>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="skill.examples.expectedSkills" class="example-item skills-example">
+                                            <h5>Skills Developed</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.expectedSkills"></TypewriterText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Listening Skills -->
                         <div v-if="chapterData.communicationSkills.listening && chapterData.communicationSkills.listening.length > 0"
                             class="content-block listening-skills">
-                            <h3>Listening Skills</h3>
-                            <ul>
-                                <li v-for="(skill, lIndex) in chapterData.communicationSkills.listening" :key="lIndex">
-                                    {{ skill }}
-                                </li>
-                            </ul>
+                            <div class="skill-header" @click="toggleSkillSection('listening')"
+                                :class="{ 'expanded': expandedSkills.listening }">
+                                <h3>Listening Skills</h3>
+                                <span class="skill-toggle-icon">
+                                    {{ expandedSkills.listening ? '▼' : '▶' }}
+                                </span>
+                            </div>
+
+                            <div v-show="expandedSkills.listening" class="skill-content">
+                                <div v-for="(skill, lIndex) in chapterData.communicationSkills.listening" :key="lIndex"
+                                    class="skill-item">
+                                    <h4>{{ skill.topic }}</h4>
+
+                                    <!-- Examples for Listening Skills -->
+                                    <div v-if="skill.examples" class="skill-examples">
+                                        <div v-if="skill.examples.activity" class="example-item activity-example">
+                                            <h5>Activity</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.activity"></TypewriterText>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="skill.examples.skillsDeveloped" class="example-item skills-example">
+                                            <h5>Skills Developed</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.skillsDeveloped"></TypewriterText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Media Literacy -->
                         <div v-if="chapterData.communicationSkills.mediaLiteracy && chapterData.communicationSkills.mediaLiteracy.length > 0"
                             class="content-block media-literacy">
-                            <h3>Media Literacy Skills</h3>
-                            <ul>
-                                <li v-for="(skill, mIndex) in chapterData.communicationSkills.mediaLiteracy" :key="mIndex">
-                                    {{ skill }}
-                                </li>
-                            </ul>
+                            <div class="skill-header" @click="toggleSkillSection('mediaLiteracy')"
+                                :class="{ 'expanded': expandedSkills.mediaLiteracy }">
+                                <h3>Media Literacy Skills</h3>
+                                <span class="skill-toggle-icon">
+                                    {{ expandedSkills.mediaLiteracy ? '▼' : '▶' }}
+                                </span>
+                            </div>
+
+                            <div v-show="expandedSkills.mediaLiteracy" class="skill-content">
+                                <div v-for="(skill, mIndex) in chapterData.communicationSkills.mediaLiteracy"
+                                    :key="mIndex" class="skill-item">
+                                    <h4>{{ skill.topic }}</h4>
+
+                                    <!-- Examples for Media Literacy -->
+                                    <div v-if="skill.examples" class="skill-examples">
+                                        <div v-if="skill.examples.activity" class="example-item activity-example">
+                                            <h5>Activity</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.activity"></TypewriterText>
+                                            </div>
+                                        </div>
+
+                                        <div v-if="skill.examples.skillsDeveloped" class="example-item skills-example">
+                                            <h5>Skills Developed</h5>
+                                            <div class="example-content">
+                                                <TypewriterText :text="skill.examples.skillsDeveloped"></TypewriterText>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-                 
-                <!-- Language Portfolio Section -->
+
                 <!-- Language Portfolio Section -->
                 <div v-show="activeSection === 'portfolio'" class="content-section">
                     <h2>Language Portfolio</h2>
@@ -576,7 +764,8 @@
                             class="content-block collection-items">
                             <h3>Portfolio Collection Items</h3>
                             <ul>
-                                <li v-for="(item, iIndex) in chapterData.languagePortfolio.collectionItems" :key="iIndex">
+                                <li v-for="(item, iIndex) in chapterData.languagePortfolio.collectionItems"
+                                    :key="iIndex">
                                     {{ item }}
                                 </li>
                             </ul>
@@ -587,7 +776,8 @@
                             class="content-block reflection-prompts">
                             <h3>Self-Assessment Questions</h3>
                             <ul>
-                                <li v-for="(prompt, pIndex) in chapterData.languagePortfolio.reflectionPrompts" :key="pIndex">
+                                <li v-for="(prompt, pIndex) in chapterData.languagePortfolio.reflectionPrompts"
+                                    :key="pIndex">
                                     {{ prompt }}
                                 </li>
                             </ul>
@@ -610,38 +800,75 @@
                         <!-- Online Resources -->
                         <div v-if="chapterData.digitalLiteracy.onlineResources && chapterData.digitalLiteracy.onlineResources.length > 0"
                             class="content-block online-resources">
-                            <h3>Online Resources</h3>
-                            <ul>
-                                <li v-for="(resource, rIndex) in chapterData.digitalLiteracy.onlineResources" :key="rIndex">
-                                    {{ resource }}
-                                </li>
-                            </ul>
+                            <div class="digital-header">
+                                <h3>Online Resources</h3>
+                            </div>
+                            <div class="digital-content">
+                                <div v-for="(resource, rIndex) in chapterData.digitalLiteracy.onlineResources"
+                                    :key="rIndex" class="resource-item">
+                                    <div class="resource-header">
+                                        <h4>{{ resource.title }}</h4>
+                                        <a :href="resource.url" target="_blank" rel="noopener noreferrer"
+                                            class="resource-link">
+                                            <span class="link-icon">🔗</span>
+                                            Visit Resource
+                                        </a>
+                                    </div>
+                                    <div class="resource-description">
+                                        <TypewriterText :text="resource.description"></TypewriterText>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Media Production -->
                         <div v-if="chapterData.digitalLiteracy.mediaProduction && chapterData.digitalLiteracy.mediaProduction.length > 0"
                             class="content-block media-production">
-                            <h3>Digital Creation Opportunities</h3>
-                            <ul>
-                                <li v-for="(opportunity, oIndex) in chapterData.digitalLiteracy.mediaProduction" :key="oIndex">
-                                    {{ opportunity }}
-                                </li>
-                            </ul>
+                            <div class="digital-header">
+                                <h3>Digital Creation Opportunities</h3>
+                            </div>
+                            <div class="digital-content">
+                                <div v-for="(opportunity, oIndex) in chapterData.digitalLiteracy.mediaProduction"
+                                    :key="oIndex" class="production-item">
+                                    <h4>{{ opportunity.title }}</h4>
+                                    <div class="production-description">
+                                        <TypewriterText :text="opportunity.description"></TypewriterText>
+                                    </div>
+                                    <div v-if="opportunity.tools && opportunity.tools.length > 0"
+                                        class="production-tools">
+                                        <h5>Recommended Tools:</h5>
+                                        <div class="tools-list">
+                                            <a v-for="(tool, tIndex) in opportunity.tools" :key="tIndex" :href="tool"
+                                                target="_blank" rel="noopener noreferrer" class="tool-link">
+                                                <span class="tool-icon">🛠️</span>
+                                                {{ extractDomainName(tool) }}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
 
                         <!-- Critical Evaluation -->
                         <div v-if="chapterData.digitalLiteracy.criticalEvaluation && chapterData.digitalLiteracy.criticalEvaluation.length > 0"
                             class="content-block critical-evaluation">
-                            <h3>Critical Information Assessment</h3>
-                            <ul>
-                                <li v-for="(skill, sIndex) in chapterData.digitalLiteracy.criticalEvaluation" :key="sIndex">
-                                    {{ skill }}
-                                </li>
-                            </ul>
+                            <div class="digital-header">
+                                <h3>Critical Information Assessment</h3>
+                            </div>
+                            <div class="digital-content">
+                                <div class="evaluation-list">
+                                    <div v-for="(skill, sIndex) in chapterData.digitalLiteracy.criticalEvaluation"
+                                        :key="sIndex" class="evaluation-item">
+                                        <div class="evaluation-icon">🔍</div>
+                                        <div class="evaluation-text">
+                                            <TypewriterText :text="skill"></TypewriterText>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
-
                 <!-- Visual Learning Resources Section -->
                 <div v-show="activeSection === 'visual'" class="content-section">
                     <h2>Visual Learning Resources</h2>
@@ -677,8 +904,24 @@ export default {
             activeSection: 'overview',
             activeTopicIndex: 0,
             googleApiKey: process.env.VUE_APP_GOOGLE_API_KEY || '',
-            googleSearchEngineId: process.env.VUE_APP_GOOGLE_SEARCH_ENGINE_ID || ''
+            googleSearchEngineId: process.env.VUE_APP_GOOGLE_SEARCH_ENGINE_ID || '',
+            expandedVocabulary: {},
+            expandedLiteraryDevices: {},
+            expandedMisconceptions: {},
+            expandedSkills: {
+                writing: false,
+                speaking: false,
+                listening: false,
+                mediaLiteracy: false
+            },
+            expandedDigital: {
+                resources: false,
+                production: false,
+                evaluation: false
+            }
+            // Use reactive() for better reactivity tracking
         }
+
     },
     computed: {
         classNum() {
@@ -701,7 +944,7 @@ export default {
             this.error = null;
 
             try {
-                const chapterId = this.chapterId || 'chapter1'; 
+                const chapterId = this.chapterId || 'chapter1';
                 const subjectFolder = 'english';
 
                 const filePath = `/data/class${this.classNum}/${subjectFolder}/${chapterId}.json`;
@@ -732,7 +975,7 @@ export default {
         // Scroll in Overview tab to a specific section
         scrollToSection(index) {
             this.activeTopicIndex = index;
-            this.activeSection = 'overview'; 
+            this.activeSection = 'overview';
             this.$nextTick(() => {
                 const element = this.$refs[`section-${index}`];
                 if (element && element[0]) {
@@ -744,12 +987,725 @@ export default {
         // Browser back
         goBack() {
             this.$router.go(-1);
-        }
+        },
+
+        // Toggle vocabulary item expanded state
+        toggleVocabulary(index) {
+            this.expandedVocabulary[index] = !this.expandedVocabulary[index];
+        },
+
+        // Toggle literary device item expanded state (new)
+        toggleLiteraryDevice(index) {
+            this.expandedLiteraryDevices[index] = !this.expandedLiteraryDevices[index];
+        },
+        // Toggle misconception item expanded state
+        toggleMisconception(index) {
+            this.expandedMisconceptions[index] = !this.expandedMisconceptions[index];
+        },
+        toggleSkillSection(skillType) {
+            this.expandedSkills[skillType] = !this.expandedSkills[skillType];
+        },
+
+        // Extract domain name from URL for display
+        extractDomainName(url) {
+            try {
+                const domain = new URL(url).hostname;
+                return domain.replace('www.', '');
+            } catch (e) {
+                return url;
+            }
+        },
     }
 }
 </script>
 
 <style scoped>
+/* Digital Literacy Interactive Styles */
+/* Digital Literacy Interactive Styles - Updated to Match Vocabulary Theme */
+.digital-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem;
+    background-color: rgba(23, 181, 181, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(23, 181, 181, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.digital-header:hover {
+    background-color: rgba(23, 181, 181, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.15);
+}
+
+.digital-header.expanded {
+    background-color: rgba(23, 181, 181, 0.15);
+    border-color: rgba(23, 181, 181, 0.3);
+}
+
+.digital-header h3 {
+    margin: 0;
+    color: #17b5b5;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.digital-toggle-icon {
+    color: #17b5b5;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
+
+.digital-header.expanded .digital-toggle-icon {
+    transform: rotate(90deg);
+}
+
+.digital-content {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideDown 0.3s ease;
+    margin-bottom: 1rem;
+}
+
+/* Resource Items */
+.resource-item {
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    background: rgba(76, 175, 80, 0.08);
+    border-radius: 8px;
+    border-left: 4px solid #4CAF50;
+    transition: background 0.3s ease;
+}
+
+.resource-item:hover {
+    background: rgba(76, 175, 80, 0.12);
+}
+
+.resource-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.resource-header h4 {
+    color: #ffffff;
+    margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    flex: 1;
+}
+
+.resource-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: #4CAF50;
+    color: white;
+    text-decoration: none;
+    border-radius: 18px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.resource-link:hover {
+    background: #45a049;
+}
+
+.resource-description {
+    color: #e0e0e0;
+    line-height: 1.5;
+}
+
+/* Production Items */
+.production-item {
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    background: rgba(156, 39, 176, 0.08);
+    border-radius: 8px;
+    border-left: 4px solid #9c27b0;
+    transition: background 0.3s ease;
+}
+
+.production-item:hover {
+    background: rgba(156, 39, 176, 0.12);
+}
+
+.production-item h4 {
+    color: #ffffff;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.production-description {
+    color: #e0e0e0;
+    line-height: 1.5;
+    margin-bottom: 1rem;
+}
+
+.production-tools h5 {
+    color: #9c27b0;
+    margin-bottom: 0.8rem;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.tools-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.tool-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.4rem 0.8rem;
+    background: #9c27b0;
+    color: white;
+    text-decoration: none;
+    border-radius: 18px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    transition: background 0.3s ease;
+}
+
+.tool-link:hover {
+    background: #8e24aa;
+}
+
+/* Evaluation Items */
+.evaluation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.evaluation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    padding: 1rem;
+    background: rgba(255, 193, 7, 0.08);
+    border-radius: 8px;
+    border-left: 4px solid #ffc107;
+    transition: background 0.3s ease;
+}
+
+.evaluation-item:hover {
+    background: rgba(255, 193, 7, 0.12);
+}
+
+.evaluation-text {
+    color: #e0e0e0;
+    line-height: 1.5;
+    flex: 1;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+
+    .digital-header,
+    .digital-content,
+    .resource-item,
+    .production-item {
+        padding: 1rem;
+    }
+
+    .resource-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .resource-link,
+    .tool-link {
+        align-self: flex-start;
+    }
+
+    .evaluation-item {
+        flex-direction: column;
+        gap: 0.5rem;
+    }
+}
+
+/* Communication Skills Interactive Styles */
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1.5rem;
+    background: linear-gradient(135deg, rgba(23, 181, 181, 0.08), rgba(23, 181, 181, 0.03));
+    border-radius: 12px;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    border: 2px solid rgba(23, 181, 181, 0.1);
+    margin-bottom: 1rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.skill-header::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+    transition: left 0.6s;
+}
+
+.skill-header:hover::before {
+    left: 100%;
+}
+
+.skill-header:hover {
+    background: linear-gradient(135deg, rgba(23, 181, 181, 0.15), rgba(23, 181, 181, 0.08));
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(23, 181, 181, 0.2);
+    border-color: rgba(23, 181, 181, 0.3);
+}
+
+.skill-header.expanded {
+    background: linear-gradient(135deg, rgba(23, 181, 181, 0.2), rgba(23, 181, 181, 0.1));
+    border-color: rgba(23, 181, 181, 0.4);
+    box-shadow: 0 5px 20px rgba(23, 181, 181, 0.25);
+}
+
+.skill-header h3 {
+    margin: 0;
+    color: #17b5b5;
+    font-size: 1.3rem;
+    font-weight: 600;
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.skill-toggle-icon {
+    color: #17b5b5;
+    font-size: 1.4rem;
+    font-weight: bold;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    user-select: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: rgba(23, 181, 181, 0.1);
+}
+
+.skill-header.expanded .skill-toggle-icon {
+    transform: rotate(90deg);
+    background: rgba(23, 181, 181, 0.2);
+}
+
+.skill-content {
+    padding: 1.5rem;
+    background: rgba(30, 30, 30, 0.8);
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    animation: slideDown 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    backdrop-filter: blur(10px);
+    margin-bottom: 1rem;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-15px);
+        max-height: 0;
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+        max-height: 2000px;
+    }
+}
+
+.skill-item {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    background: rgba(255, 255, 255, 0.03);
+    border-radius: 10px;
+    border-left: 4px solid #17b5b5;
+    transition: all 0.3s ease;
+}
+
+.skill-item:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(5px);
+}
+
+.skill-item:last-child {
+    margin-bottom: 0;
+}
+
+.skill-item h4 {
+    color: #ffffff;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.skill-examples {
+    margin-top: 1.5rem;
+}
+
+.example-item {
+    margin-bottom: 1.5rem;
+    padding: 1.2rem;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.example-item:last-child {
+    margin-bottom: 0;
+}
+
+/* Different styles for different example types */
+.formal-example {
+    background: linear-gradient(135deg, rgba(76, 175, 80, 0.08), rgba(76, 175, 80, 0.03));
+    border-left: 4px solid #4CAF50;
+}
+
+.informal-example {
+    background: linear-gradient(135deg, rgba(156, 39, 176, 0.08), rgba(156, 39, 176, 0.03));
+    border-left: 4px solid #9c27b0;
+}
+
+.paragraph-example,
+.metaphor-example {
+    background: linear-gradient(135deg, rgba(255, 193, 7, 0.08), rgba(255, 193, 7, 0.03));
+    border-left: 4px solid #ffc107;
+}
+
+.activity-example {
+    background: linear-gradient(135deg, rgba(33, 150, 243, 0.08), rgba(33, 150, 243, 0.03));
+    border-left: 4px solid #2196F3;
+}
+
+.sample-example,
+.skills-example {
+    background: linear-gradient(135deg, rgba(255, 87, 34, 0.08), rgba(255, 87, 34, 0.03));
+    border-left: 4px solid #FF5722;
+}
+
+.example-item h5 {
+    color: #17b5b5;
+    margin-bottom: 0.8rem;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.example-content {
+    color: #e0e0e0;
+    line-height: 1.6;
+}
+
+/* Letter format styling */
+.letter-format {
+    background: rgba(0, 0, 0, 0.2);
+    padding: 1.5rem;
+    border-radius: 8px;
+    font-family: 'Courier New', monospace;
+    white-space: pre-wrap;
+    color: #ffffff;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 0.9rem;
+    line-height: 1.5;
+    overflow-x: auto;
+}
+
+/* Hover effects for example items */
+.example-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.formal-example:hover {
+    box-shadow: 0 5px 15px rgba(76, 175, 80, 0.2);
+}
+
+.informal-example:hover {
+    box-shadow: 0 5px 15px rgba(156, 39, 176, 0.2);
+}
+
+.paragraph-example:hover,
+.metaphor-example:hover {
+    box-shadow: 0 5px 15px rgba(255, 193, 7, 0.2);
+}
+
+.activity-example:hover {
+    box-shadow: 0 5px 15px rgba(33, 150, 243, 0.2);
+}
+
+.sample-example:hover,
+.skills-example:hover {
+    box-shadow: 0 5px 15px rgba(255, 87, 34, 0.2);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .skill-header {
+        padding: 1rem;
+    }
+
+    .skill-content {
+        padding: 1rem;
+    }
+
+    .skill-item {
+        padding: 1rem;
+    }
+
+    .example-item {
+        padding: 1rem;
+    }
+
+    .letter-format {
+        font-size: 0.8rem;
+        padding: 1rem;
+    }
+}
+
+/* Cultural Context Images Styles */
+.text-images {
+    margin-top: 20px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    padding-top: 15px;
+}
+
+.text-images h5 {
+    color: #17b5b5;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.images-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.image-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.image-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(23, 181, 181, 0.2);
+}
+
+.cultural-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.3s ease;
+}
+
+.image-item:hover .cultural-image {
+    transform: scale(1.05);
+}
+
+.image-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+    color: white;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .images-grid {
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 10px;
+    }
+
+    .cultural-image {
+        height: 150px;
+    }
+}
+
+.device-term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem;
+    background-color: rgba(23, 181, 181, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(23, 181, 181, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.device-term-header:hover {
+    background-color: rgba(23, 181, 181, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.15);
+}
+
+.device-term-header.expanded {
+    background-color: rgba(23, 181, 181, 0.15);
+    border-color: rgba(23, 181, 181, 0.3);
+}
+
+.device-term-header h4 {
+    margin: 0;
+    color: #17b5b5;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.device-toggle-icon {
+    color: #17b5b5;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
+
+.device-term-header.expanded .device-toggle-icon {
+    transform: rotate(90deg);
+}
+
+.device-details {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.device-definition {
+    margin-bottom: 12px;
+    line-height: 1.6;
+    color: #ffffff;
+}
+
+.device-effect {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.device-example {
+    margin-bottom: 10px;
+    color: #ffffff;
+}
+
+.device-etymology {
+    margin-bottom: 10px;
+    color: #ffffff;
+    font-size: 0.95em;
+}
+
+.device-usage {
+    color: #ffffff;
+    font-size: 0.95em;
+}
+
+/* Common Misconceptions Interactive Styles */
+.misconception-term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem;
+    background-color: rgba(23, 181, 181, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(23, 181, 181, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.misconception-term-header:hover {
+    background-color: rgba(23, 181, 181, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.15);
+}
+
+.misconception-term-header.expanded {
+    background-color: rgba(23, 181, 181, 0.15);
+    border-color: rgba(23, 181, 181, 0.3);
+}
+
+.misconception-term-header h4 {
+    margin: 0;
+    color: #17b5b5;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.misconception-toggle-icon {
+    color: #17b5b5;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
+
+.misconception-term-header.expanded .misconception-toggle-icon {
+    transform: rotate(90deg);
+}
+
+.misconception-details {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideDown 0.3s ease;
+}
+
+.correction-content {
+    color: #ffffff;
+}
+
+.correction-title {
+    color: #17b5b5;
+    margin-bottom: 8px;
+}
+
+
 /* Dark Theme for English Content Page */
 .content-page {
     max-width: 1200px;
@@ -1015,6 +1971,7 @@ header h1 {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
@@ -1073,7 +2030,6 @@ header h1 {
 .visual-item,
 .activity-item,
 .exercise-item,
-.vocabulary-item,
 .device-item,
 .misconception-item,
 .assessment-item,
@@ -1087,12 +2043,20 @@ header h1 {
     line-height: 1.6;
 }
 
+/* Updated vocabulary item styles for clickable functionality */
+.vocabulary-item {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+    border-bottom: none;
+    padding-bottom: 0;
+}
+
 .concept-item:last-child,
 .excerpt-item:last-child,
 .visual-item:last-child,
 .activity-item:last-child,
 .exercise-item:last-child,
-.vocabulary-item:last-child,
 .device-item:last-child,
 .misconception-item:last-child,
 .assessment-item:last-child,
@@ -1101,6 +2065,70 @@ header h1 {
     border-bottom: none;
     margin-bottom: 0;
     padding-bottom: 0;
+}
+
+/* Key Vocabulary Interactive Styles */
+.vocabulary-term-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: pointer;
+    padding: 1rem;
+    background-color: rgba(23, 181, 181, 0.05);
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    border: 1px solid rgba(23, 181, 181, 0.1);
+    margin-bottom: 0.5rem;
+}
+
+.vocabulary-term-header:hover {
+    background-color: rgba(23, 181, 181, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(23, 181, 181, 0.15);
+}
+
+.vocabulary-term-header.expanded {
+    background-color: rgba(23, 181, 181, 0.15);
+    border-color: rgba(23, 181, 181, 0.3);
+}
+
+.vocabulary-term-header h4 {
+    margin: 0;
+    color: #17b5b5;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+.vocabulary-toggle-icon {
+    color: #17b5b5;
+    font-size: 1.2rem;
+    font-weight: bold;
+    transition: transform 0.3s ease;
+    user-select: none;
+}
+
+.vocabulary-term-header.expanded .vocabulary-toggle-icon {
+    transform: rotate(90deg);
+}
+
+.vocabulary-details {
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.03);
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    animation: slideDown 0.3s ease;
+}
+
+@keyframes slideDown {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 
 /* Text Excerpts */
@@ -1484,8 +2512,13 @@ h5 {
 }
 
 @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .error-message {

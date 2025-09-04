@@ -51,10 +51,10 @@
                     class="nav-item">
                     Exercises
                 </button>
-                <button @click="activeSection = 'personalities'" :class="{ active: activeSection === 'personalities' }" 
-          class="nav-item">
-          Talk to Person
-        </button>
+                <button @click="activeSection = 'personalities'" :class="{ active: activeSection === 'personalities' }"
+                    class="nav-item">
+                    Talk to Person
+                </button>
             </div>
         </nav>
         <!-- Loading State -->
@@ -73,52 +73,49 @@
                 <button @click="goBack" class="back-button">Go Back</button>
             </div>
         </div>
-<!-- Main Content with Sidebar -->
-<div class="main-content" v-else>
-    <!-- Sidebar -->
-    <aside class="sidebar">
+        <!-- Main Content with Sidebar -->
+        <div class="main-content" v-else>
+            <!-- Sidebar -->
+            <aside class="sidebar">
 
-        <!-- Main Topics Navigation (moved to top) -->
-        <div class="sidebar-section">
-            <h4>Main Topics</h4>
-            <nav class="topics-nav">
-                <button 
-                    v-for="(section, index) in chapterData.sections" 
-                    :key="'topic-' + index"
-                    @click="scrollToSection(index)" 
-                    :class="{ active: activeTopicIndex === index }"
-                    class="topic-item">
-                    {{ section.title }}
-                </button>
-            </nav>
-        </div>
+                <!-- Main Topics Navigation (moved to top) -->
+                <div class="sidebar-section">
+                    <h4>Main Topics</h4>
+                    <nav class="topics-nav">
+                        <button v-for="(section, index) in chapterData.sections" :key="'topic-' + index"
+                            @click="scrollToSection(index)" :class="{ active: activeTopicIndex === index }"
+                            class="topic-item">
+                            {{ section.title }}
+                        </button>
+                    </nav>
+                </div>
 
-        <!-- Chapter Contents -->
-        <div class="sidebar-header">
-            <h3>Chapter Contents</h3>
-        </div>
+                <!-- Chapter Contents -->
+                <div class="sidebar-header">
+                    <h3>Chapter Contents</h3>
+                </div>
 
-        <!-- Chapter Overview in Sidebar -->
-        <div class="sidebar-section" v-if="chapterData.chapterMetadata">
-            <h4>Introduction</h4>
-            <div class="intro-content">
-                <TypewriterText
-                    :text="'This chapter covers ' + chapterData.chapterMetadata.title + ' in Mathematics for Class ' + chapterData.chapterMetadata.grade + '.'">
-                </TypewriterText>
-            </div>
-            <div v-if="chapterData.chapterMetadata.learningObjectives && chapterData.chapterMetadata.learningObjectives.length > 0"
-                class="learning-objectives">
-                <h5>Learning Objectives</h5>
-                <ul>
-                    <li v-for="(objective, index) in chapterData.chapterMetadata.learningObjectives"
-                        :key="index">
-                        {{ objective }}
-                    </li>
-                </ul>
-            </div>
-        </div>
-        
-    </aside>
+                <!-- Chapter Overview in Sidebar -->
+                <div class="sidebar-section" v-if="chapterData.chapterMetadata">
+                    <h4>Introduction</h4>
+                    <div class="intro-content">
+                        <TypewriterText
+                            :text="'This chapter covers ' + chapterData.chapterMetadata.title + ' in Mathematics for Class ' + chapterData.chapterMetadata.grade + '.'">
+                        </TypewriterText>
+                    </div>
+                    <div v-if="chapterData.chapterMetadata.learningObjectives && chapterData.chapterMetadata.learningObjectives.length > 0"
+                        class="learning-objectives">
+                        <h5>Learning Objectives</h5>
+                        <ul>
+                            <li v-for="(objective, index) in chapterData.chapterMetadata.learningObjectives"
+                                :key="index">
+                                {{ objective }}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+
+            </aside>
 
             <!-- Content Area -->
             <main class="content-area">
@@ -309,14 +306,17 @@
                         <AIExercises :sectionData="section" :chapterMetadata="chapterData.chapterMetadata" />
                     </div>
                 </div>
-                
+
                 <!-- Talk to Person Section -->
                 <div v-show="activeSection === 'personalities'" class="content-section">
                     <div class="section-header-with-button">
                         <h2>Talk to Person</h2>
                         <button @click="openPersonalityPopup" class="enlarge-button">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3">
+                                </path>
                             </svg>
                             Open Fullscreen
                         </button>
@@ -327,10 +327,8 @@
                         <!-- Personality list (names only) -->
                         <div v-if="!selectedPersonality">
                             <ul>
-                                <li v-for="personality in chapterData.personalities" 
-                                    :key="personality.id"
-                                    @click="selectPersonality(personality)"
-                                    class="personality-name">
+                                <li v-for="personality in chapterData.personalities" :key="personality.id"
+                                    @click="selectPersonality(personality)" class="personality-name">
                                     {{ personality.name }}
                                 </li>
                             </ul>
@@ -338,8 +336,7 @@
 
                         <!-- Chat view -->
                         <div v-else>
-                            <PersonalityChat 
-                                :personality="selectedPersonality" 
+                            <PersonalityChat :personality="selectedPersonality"
                                 @back-to-list="selectedPersonality = null" />
                         </div>
                     </div>
@@ -355,7 +352,8 @@
                     <h1>Talk to Person - Interactive Learning</h1>
                     <div class="popup-controls">
                         <button @click="closePersonalityPopup" class="close-popup-button">
-                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
                                 <path d="M18 6L6 18M6 6l12 12"></path>
                             </svg>
                         </button>
@@ -368,25 +366,24 @@
                     <div v-if="!selectedPersonalityPopup" class="personalities-grid">
                         <h3>Choose a Historical Figure to Learn From</h3>
                         <div class="personality-cards-grid">
-                            <div v-for="personality in chapterData.personalities" 
-                                 :key="personality.id"
-                                 @click="selectPersonalityPopup(personality)"
-                                 class="personality-card">
+                            <div v-for="personality in chapterData.personalities" :key="personality.id"
+                                @click="selectPersonalityPopup(personality)" class="personality-card">
                                 <div class="personality-avatar">
                                     {{ personality.name.charAt(0) }}
                                 </div>
                                 <h4>{{ personality.name }}</h4>
-                                <p class="personality-brief">{{ personality.description || 'Learn from this mathematical genius' }}</p>
+                                <p class="personality-brief">
+                                    {{ personality.description || 'Learn from this mathematical genius' }}
+                                </p>
+
                             </div>
                         </div>
                     </div>
 
                     <!-- Chat view in popup -->
                     <div v-else class="personality-chat-popup">
-                        <PersonalityChat 
-                            :personality="selectedPersonalityPopup" 
-                            @back-to-list="selectedPersonalityPopup = null"
-                            :isFullscreen="true" />
+                        <PersonalityChat :personality="selectedPersonalityPopup"
+                            @back-to-list="selectedPersonalityPopup = null" :isFullscreen="true" />
                     </div>
                 </div>
             </div>
@@ -448,7 +445,7 @@ export default {
             this.error = null;
 
             try {
-                const chapterId = this.chapterId || 'chapter1'; 
+                const chapterId = this.chapterId || 'chapter1';
                 // Since 'mathematics' is static in route, hardcode
                 const subjectFolder = 'mathematics';
 
@@ -480,7 +477,7 @@ export default {
         // Scroll in Overview tab to a specific section
         scrollToSection(index) {
             this.activeTopicIndex = index;
-            this.activeSection = 'overview'; 
+            this.activeSection = 'overview';
             this.$nextTick(() => {
                 const element = this.$refs[`section-${index}`];
                 if (element && element[0]) {
@@ -554,7 +551,7 @@ export default {
             this.userMessage = '';
         }
     },
-    
+
     // Clean up when component is destroyed
     beforeUnmount() {
         // Restore body scroll if component is destroyed while popup is open
@@ -916,6 +913,7 @@ header h1 {
     from {
         opacity: 0;
     }
+
     to {
         opacity: 1;
     }
@@ -940,6 +938,7 @@ header h1 {
         opacity: 0;
         transform: scale(0.9) translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: scale(1) translateY(0);
@@ -1492,14 +1491,14 @@ h5 {
     .personality-popup-overlay {
         padding: 10px;
     }
-    
+
     .personality-popup-container {
         height: 100vh;
         max-height: none;
         border-radius: 0;
         margin: 0;
     }
-    
+
     .enlarge-button {
         font-size: 0.9rem;
         padding: 10px 16px;
